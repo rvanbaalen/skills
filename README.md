@@ -12,6 +12,7 @@ Public Claude Code skills by Robin van Baalen.
 
 ```
 /plugin install commit@rvanbaalen
+/plugin install make-issue@rvanbaalen
 ```
 
 ## Skills
@@ -19,3 +20,4 @@ Public Claude Code skills by Robin van Baalen.
 | Skill | Description | Invoke |
 |-------|-------------|--------|
 | `commit` | Micro-commit with conventional commit messages | `/rvanbaalen:commit` |
+| `make-issue` | Create a GitHub issue with template, type, and label selection | `/rvanbaalen:make-issue` |

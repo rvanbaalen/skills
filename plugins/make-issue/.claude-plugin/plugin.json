@@ -1,0 +1,8 @@
+{
+  "name": "rvanbaalen",
+  "description": "Create a new GitHub issue with template, type, and label selection",
+  "version": "1.0.0",
+  "author": {
+    "name": "Robin van Baalen"
+  }
+}

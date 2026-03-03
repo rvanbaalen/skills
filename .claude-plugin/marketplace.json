@@ -13,6 +13,12 @@
       "source": "./plugins/commit",
       "description": "Micro-commit with conventional commit messages",
       "version": "1.0.0"
+    },
+    {
+      "name": "make-issue",
+      "source": "./plugins/make-issue",
+      "description": "Create a new GitHub issue with template, type, and label selection",
+      "version": "1.0.0"
     }
   ]
 }
