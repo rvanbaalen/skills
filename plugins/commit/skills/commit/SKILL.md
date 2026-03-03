@@ -1,7 +1,6 @@
 ---
 name: commit
 description: Commit changes using micro commits with conventional commit messages. Analyzes git diff, groups related files, and proposes commits for approval. Use when the user wants to commit their changes.
-disable-model-invocation: true
 ---
 
 # Commit Changes
