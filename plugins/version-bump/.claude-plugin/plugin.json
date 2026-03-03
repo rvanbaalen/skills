@@ -1,0 +1,8 @@
+{
+  "name": "rvanbaalen",
+  "description": "Auto-suggest semver version bumps for changed plugins before pushing",
+  "version": "1.0.0",
+  "author": {
+    "name": "Robin van Baalen"
+  }
+}

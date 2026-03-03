@@ -19,6 +19,12 @@
       "source": "./plugins/make-issue",
       "description": "Create a new GitHub issue with template, type, and label selection",
       "version": "1.0.0"
+    },
+    {
+      "name": "version-bump",
+      "source": "./plugins/version-bump",
+      "description": "Auto-suggest semver version bumps for changed plugins before pushing",
+      "version": "1.0.0"
     }
   ]
 }
