@@ -1,0 +1,18 @@
+{
+  "name": "rvanbaalen",
+  "owner": {
+    "name": "Robin van Baalen"
+  },
+  "metadata": {
+    "description": "Claude Code skills by Robin van Baalen",
+    "pluginRoot": "./plugins"
+  },
+  "plugins": [
+    {
+      "name": "commit",
+      "source": "./plugins/commit",
+      "description": "Micro-commit with conventional commit messages",
+      "version": "1.0.0"
+    }
+  ]
+}
