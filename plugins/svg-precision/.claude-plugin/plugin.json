@@ -1,0 +1,8 @@
+{
+  "name": "svg-precision",
+  "description": "Deterministic SVG generation, validation, and rendering. Use for icons, diagrams, charts, UI mockups, or technical drawings requiring structural correctness and cross-viewer compatibility.",
+  "version": "1.0.0",
+  "author": {
+    "name": "dkyazzentwatwa"
+  }
+}
