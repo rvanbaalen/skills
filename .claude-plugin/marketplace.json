@@ -25,6 +25,18 @@
       "source": "./plugins/version-bump",
       "description": "Auto-suggest semver version bumps for changed plugins before pushing",
       "version": "1.0.0"
+    },
+    {
+      "name": "ocr-document-processor",
+      "source": "./plugins/ocr-document-processor",
+      "description": "Extract text from images and scanned PDFs using OCR. Supports 100+ languages, table detection, structured output, and batch processing.",
+      "version": "1.0.0"
+    },
+    {
+      "name": "svg-precision",
+      "source": "./plugins/svg-precision",
+      "description": "Deterministic SVG generation, validation, and rendering for icons, diagrams, charts, UI mockups, and technical drawings.",
+      "version": "1.0.0"
     }
   ]
 }
