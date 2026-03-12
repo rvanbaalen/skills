@@ -37,6 +37,12 @@
       "source": "./plugins/svg-precision",
       "description": "Deterministic SVG generation, validation, and rendering for icons, diagrams, charts, UI mockups, and technical drawings.",
       "version": "1.0.0"
+    },
+    {
+      "name": "time-registration",
+      "source": "./plugins/time-registration",
+      "description": "Git-based time registration summaries",
+      "version": "1.0.0"
     }
   ]
 }

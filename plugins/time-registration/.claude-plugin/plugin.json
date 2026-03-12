@@ -1,0 +1,8 @@
+{
+  "name": "rvanbaalen",
+  "description": "Git-based time registration summaries",
+  "version": "1.0.0",
+  "author": {
+    "name": "Robin van Baalen"
+  }
+}
