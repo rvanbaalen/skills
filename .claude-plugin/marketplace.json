@@ -43,6 +43,12 @@
       "source": "./plugins/time-registration",
       "description": "Git-based time registration summaries",
       "version": "1.0.0"
+    },
+    {
+      "name": "lottie-animator",
+      "source": "./plugins/lottie-animator",
+      "description": "Generate professional Lottie animations from static SVGs. Replaces After Effects for motion graphics.",
+      "version": "1.0.0"
     }
   ]
 }
