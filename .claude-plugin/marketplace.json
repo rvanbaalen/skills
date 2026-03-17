@@ -49,6 +49,12 @@
       "source": "./plugins/lottie-animator",
       "description": "Generate professional Lottie animations from static SVGs. Replaces After Effects for motion graphics.",
       "version": "1.0.0"
+    },
+    {
+      "name": "react-query",
+      "source": "./plugins/react-query",
+      "description": "TanStack Query v5 (React Query) review and coding standards",
+      "version": "1.0.0"
     }
   ]
 }
