@@ -18,6 +18,7 @@ Public Claude Code skills by Robin van Baalen.
 /plugin install svg-precision@rvanbaalen
 /plugin install time-registration@rvanbaalen
 /plugin install version-bump@rvanbaalen
+/plugin install driverjs-guide@rvanbaalen
 ```
 
 ## Skills
@@ -25,6 +26,7 @@ Public Claude Code skills by Robin van Baalen.
 | Skill | Description | Invoke |
 |-------|-------------|--------|
 | `commit` | Micro-commit with conventional commit messages | `/rvanbaalen:commit` |
+| `driverjs-guide` | Driver.js product tours, onboarding flows, and element highlighting | auto-triggered |
 | `lottie-animator` | Generate professional Lottie animations from static SVGs | `/rvanbaalen:lottie-animator` |
 | `make-issue` | Create a GitHub issue with template, type, and label selection | `/rvanbaalen:make-issue` |
 | `ocr-document-processor` | Extract text from images and scanned PDFs using OCR | `/rvanbaalen:ocr-document-processor` |

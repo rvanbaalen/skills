@@ -55,6 +55,12 @@
       "source": "./plugins/react-query",
       "description": "TanStack Query v5 (React Query) review and coding standards",
       "version": "1.0.0"
+    },
+    {
+      "name": "driverjs-guide",
+      "source": "./plugins/driverjs-guide",
+      "description": "Driver.js product tours, onboarding flows, and element highlighting reference",
+      "version": "1.0.0"
     }
   ]
 }
