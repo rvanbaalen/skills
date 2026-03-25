@@ -61,6 +61,12 @@
       "source": "./plugins/driverjs-guide",
       "description": "Driver.js product tours, onboarding flows, and element highlighting reference",
       "version": "1.0.0"
+    },
+    {
+      "name": "cofounder",
+      "source": "./plugins/cofounder",
+      "description": "Critical-thinking business co-founder that enforces prioritization, challenges assumptions, and becomes smarter over time",
+      "version": "1.0.0"
     }
   ]
 }
