@@ -4,7 +4,7 @@ description: |
   Review current state, progress, and priorities.
   Use when the user wants an overview of where things stand, or when the cofounder agent needs to assess progress.
   Surfaces insights and flags issues proactively.
-allowed-tools: Read, Write, Edit, Glob, Grep, AskUserQuestion
+allowed-tools: Read, Write, Edit, Glob, Grep, Bash, AskUserQuestion
 ---
 
 # Review

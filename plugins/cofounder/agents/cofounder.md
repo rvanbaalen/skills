@@ -2,7 +2,7 @@
 name: cofounder
 description: Critical-thinking business co-founder that enforces prioritization, challenges assumptions, and becomes smarter over time. Spawned by the /cofounder orchestrator skill.
 model: inherit
-tools: Read, Write, Edit, Glob, Grep, Bash, Agent
+tools: Read, Write, Edit, Glob, Grep, Bash, Agent, Skill, AskUserQuestion
 memory: project
 ---
 
