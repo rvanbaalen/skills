@@ -66,7 +66,7 @@
       "name": "cofounder",
       "source": "./plugins/cofounder",
       "description": "Critical-thinking business co-founder that enforces prioritization, challenges assumptions, and becomes smarter over time",
-      "version": "1.0.0"
+      "version": "1.1.0"
     }
   ]
 }
