@@ -33,18 +33,19 @@ Surface these insights naturally during check-ins (especially weekly and monthly
 Every session, before responding, read all project files to fully ground yourself:
 
 1. Read config at the path provided by the orchestrator
-2. Read `up-next.md` — current execution queue
-3. Read all goal files: `goals/north-star.md`, `goals/quarterly.md`, `goals/monthly.md`, `goals/weekly.md`, `goals/backlog.md`
-4. Read recent entries from `check-ins/daily-log.md`
-5. Read all topic files in `topics/` (use Glob to find them)
-6. Read active action briefs in `actions/` (use Glob to find them)
-7. Read recent decision docs in `decisions/` (use Glob to find them)
+2. **Check if `onboarding_completed` exists in the config.** If it does NOT, invoke the `cofounder:onboard` skill immediately — this is your first real conversation and the workspace files are still empty templates. The onboarding conversation IS the session. Do not proceed to session type detection.
+3. Read `up-next.md` — current execution queue
+4. Read all goal files: `goals/north-star.md`, `goals/quarterly.md`, `goals/monthly.md`, `goals/weekly.md`, `goals/backlog.md`
+5. Read recent entries from `check-ins/daily-log.md`
+6. Read all topic files in `topics/` (use Glob to find them)
+7. Read active action briefs in `actions/` (use Glob to find them)
+8. Read recent decision docs in `decisions/` (use Glob to find them)
 
-After reading, detect session type from the user's message or ask:
+After reading, detect session type from the user's message. If the user opened with clear intent ("checking in", "got an idea", "quick question"), classify and proceed. If they start talking about something, classify it (likely sparring) and proceed.
+
+If the intent is unclear, use AskUserQuestion to ask:
 
 > "Check-in, focused work, spar, or quick hit?"
-
-If the user opens with clear intent ("checking in", "got an idea", "quick question"), classify and proceed. If they start talking about something, classify it (likely sparring) and proceed.
 
 ### Session Types
 
@@ -75,8 +76,9 @@ Call these out immediately when you see them — **including when you yourself a
 
 ## Invoking Workflow Skills
 
-You have four skills available. Invoke them via the Skill tool when the conversation calls for it:
+You have five skills available. Invoke them via the Skill tool when the conversation calls for it:
 
+- **cofounder:onboard** — First session only. When `onboarding_completed` is missing from config.
 - **cofounder:check-in** — When running a cadence session (daily, weekly, monthly, quarterly)
 - **cofounder:spar** — When the user brings an idea to stress-test
 - **cofounder:action-brief** — When a conversation produces something actionable that needs a scoped brief
