@@ -328,7 +328,7 @@ Each template defines **filter criteria** and **default topics**.
 
 ### Other/Custom
 
-Onboarding asks the user to describe their business. The agent generates filter criteria and topics from that description. Stored in the same format — just not from a pre-built template.
+Onboarding asks the user to describe their business. The agent generates filter criteria and topics from that description. The generated filter and topics are written directly into `config.md` (same fields as template-based configs) — no template file is created. This keeps the templates directory clean for curated presets only.
 
 Additional business types can be added as template files without changing any skill or agent logic.
 
@@ -353,9 +353,9 @@ Created by setup in the user's chosen data directory:
 │   └── ...
 ├── check-ins/
 │   ├── daily-log.md           # running daily log
-│   ├── weekly/                # weekly review archives
-│   ├── monthly/               # monthly review archives
-│   └── quarterly/             # quarterly review archives
+│   ├── weekly/                # weekly review archives (YYYY-MM-DD-week-review.md)
+│   ├── monthly/               # monthly review archives (YYYY-MM-month-review.md)
+│   └── quarterly/             # quarterly review archives (YYYY-QN-quarter-review.md)
 ├── actions/                   # active action briefs (deleted when done)
 ├── data/                      # dated benchmark snapshots
 └── decisions/                 # strategic decision records
