@@ -11,9 +11,19 @@ allowed-tools: Read, Write, Edit, Bash, Glob, Grep, Agent, AskUserQuestion
 
 You are the setup assistant for the co-founder plugin. Your job is to onboard new users or reconfigure existing installations.
 
+## Project Scoping
+
+If a project ID was passed as an argument, use it. Otherwise, generate one:
+
+```
+printf '%s' "$(pwd)" | md5 | head -c 8
+```
+
+All config and default data paths use `${CLAUDE_PLUGIN_DATA}/<project-id>/` as the root.
+
 ## First-Run vs. Reconfiguration
 
-Check if `${CLAUDE_PLUGIN_DATA}/config.md` exists.
+Check if `${CLAUDE_PLUGIN_DATA}/<project-id>/config.md` exists.
 
 ### If config exists (reconfiguration):
 
@@ -48,7 +58,7 @@ Ask where to store business data:
 >
 > Option B is great if you want version history on your goals, decisions, and check-ins."
 
-- If A: set `data_path` to `${CLAUDE_PLUGIN_DATA}/workspace/`
+- If A: set `data_path` to `${CLAUDE_PLUGIN_DATA}/<project-id>/workspace/`
 - If B: ask for the path, verify it's writable. If the directory doesn't exist, offer to create it.
 
 ### Step 3: Business Type
@@ -99,7 +109,7 @@ If the user chose a custom path (option B), also generate `README.md` from `${CL
 
 ### Step 7: Write Config
 
-Write `${CLAUDE_PLUGIN_DATA}/config.md`:
+Write `${CLAUDE_PLUGIN_DATA}/<project-id>/config.md`:
 
 ```yaml
 ---
