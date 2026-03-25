@@ -67,6 +67,12 @@
       "source": "./plugins/cofounder",
       "description": "Critical-thinking business co-founder that enforces prioritization, challenges assumptions, and becomes smarter over time",
       "version": "1.1.0"
+    },
+    {
+      "name": "pm",
+      "source": "./plugins/pm",
+      "description": "Delivery-focused project manager that enforces deadlines, tracks estimates, detects drift, and holds you accountable",
+      "version": "1.0.0"
     }
   ]
 }
