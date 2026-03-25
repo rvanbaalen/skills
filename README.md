@@ -19,6 +19,7 @@ Public Claude Code skills by Robin van Baalen.
 /plugin install time-registration@rvanbaalen
 /plugin install version-bump@rvanbaalen
 /plugin install driverjs-guide@rvanbaalen
+/plugin install cofounder@rvanbaalen
 ```
 
 ## Skills
@@ -33,3 +34,22 @@ Public Claude Code skills by Robin van Baalen.
 | `svg-precision` | Deterministic SVG generation, validation, and rendering | `/rvanbaalen:svg-precision` |
 | `time-registration` | Git-based time registration summaries | `/rvanbaalen:time-registration` |
 | `version-bump` | Auto-suggest semver version bumps for changed plugins before pushing | `/rvanbaalen:version-bump` |
+
+## Cofounder
+
+A critical-thinking business co-founder agent that enforces prioritization, challenges assumptions, and becomes smarter the more you use it. Includes onboarding, check-in cadences, idea sparring, action briefs, and progress review.
+
+```
+/plugin install cofounder@rvanbaalen
+```
+
+Then type `/cofounder` to start. First run triggers onboarding automatically.
+
+| Skill | Description | Invoke |
+|-------|-------------|--------|
+| `cofounder` | Orchestrator — entry point, spawns the agent | `/cofounder:cofounder` |
+| `setup` | Onboarding and reconfiguration | `/cofounder:setup` |
+| `check-in` | Daily, weekly, monthly, quarterly cadences | `/cofounder:check-in` |
+| `spar` | Stress-test ideas through the business filter | `/cofounder:spar` |
+| `action-brief` | Create scoped action briefs | `/cofounder:action-brief` |
+| `review` | Review state, progress, and priorities | `/cofounder:review` |
