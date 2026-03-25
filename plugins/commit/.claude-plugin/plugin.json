@@ -1,7 +1,7 @@
 {
   "name": "rvanbaalen",
   "description": "Micro-commit with conventional commit messages",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": {
     "name": "Robin van Baalen"
   }

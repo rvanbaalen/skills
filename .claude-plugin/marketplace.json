@@ -11,8 +11,8 @@
     {
       "name": "commit",
       "source": "./plugins/commit",
-      "description": "Micro-commit with conventional commit messages",
-      "version": "1.0.0"
+      "description": "Micro-commit with conventional commit messages, with interactive and non-interactive (background) modes",
+      "version": "1.1.0"
     },
     {
       "name": "make-issue",

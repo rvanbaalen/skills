@@ -1,13 +1,41 @@
 ---
 name: commit
-description: Commit changes using micro commits with conventional commit messages. Analyzes git diff, groups related files, and proposes commits for approval. Use when the user wants to commit their changes.
+description: Commit changes using micro commits with conventional commit messages. Analyzes git diff, groups related files, and proposes commits for approval. Supports interactive and non-interactive (background) modes. Use when the user wants to commit their changes.
 ---
 
 # Commit Changes
 
 Commit the current changes using micro commits with conventional commit messages.
 
-## Process
+## Mode Selection
+
+Before doing anything else, use `AskUserQuestion` to ask the user which mode to use:
+
+**Question:** "How would you like to commit?"
+
+**Options:**
+- **Interactive** — propose each commit for approval
+- **Non-interactive** — commit in the background (you can keep working)
+
+## Interactive Mode
+
+Run the full interactive workflow described below (analyze, group, propose, commit, push).
+
+## Non-interactive Mode
+
+Spawn a background Agent (use `model: "sonnet"` and `run_in_background: true`) with a prompt that instructs it to:
+
+1. Run the same analysis steps (git status, git diff, git diff --cached, git log)
+2. Group related files using the grouping heuristics below
+3. Auto-approve sensible commits and skip anything ambiguous or risky (e.g., files that look unrelated, partial changes that may break something)
+4. Execute commits using the commit message format and rules below
+5. Try to push — push if the branch already tracks a remote; if on an untracked branch, push with `-u origin <branch>`; if on `main`/`master`, do NOT push and mention it in the result
+
+After dispatching the agent, inform the user: "Committing in the background — you'll be notified when it's done." Then stop — do not block the conversation.
+
+When the background agent completes, summarize what it committed (and whether it pushed) to the user.
+
+## Process (Interactive Mode)
 
 ### 1. Analyze changes
 
@@ -89,4 +117,6 @@ Match the scope style and conventions visible in the repo's recent git log. If t
 
 - Never add signatures to commit messages (no "Co-authored-by", no "Generated with")
 - Never skip git hooks (no `--no-verify`)
-- All user decisions go through `AskUserQuestion` — never wait for freeform input
+- In interactive mode, all user decisions go through `AskUserQuestion` — never wait for freeform input
+- In non-interactive mode, never commit files that look like secrets (.env, credentials, tokens)
+- In non-interactive mode, do NOT push to `main` or `master` — only push feature/topic branches
