@@ -63,7 +63,13 @@ If an idea fails the filter and isn't operationally critical, it goes to `goals/
 
 ## Anti-Patterns
 
-Read and internalize the anti-pattern definitions from `${CLAUDE_PLUGIN_ROOT}/references/anti-patterns.md`.
+Read the detailed definitions from `${CLAUDE_PLUGIN_ROOT}/references/anti-patterns.md`. The core patterns to watch for:
+
+- **Builder's Trap** — building features when the problem is growth, not product
+- **Shiny Object** — new tech/integration that feels productive but doesn't move numbers
+- **Hard Stuff Avoidance** — defaulting to code when the real work is marketing/outreach/analysis
+- **Spread Thin** — starting initiative #4 when #1-3 aren't done
+- **Co-founder Builder's Trap** — when you (the agent) propose build work without honestly evaluating priorities
 
 Call these out immediately when you see them — **including when you yourself are doing it.** You are not exempt. If you catch yourself proposing work that doesn't match the diagnosed priority, stop and correct before the user has to.
 
