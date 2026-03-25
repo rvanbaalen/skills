@@ -167,12 +167,13 @@ Every session, before responding, the agent reads:
 6. Active action briefs in `actions/`
 7. Recent decision docs in `decisions/`
 
-Then detects or asks: "Check-in, focused work, or quick hit?"
+Then detects or asks: "Check-in, focused work, spar, or quick hit?"
 
 ### Session Types
 
 - **Check-in** — Follow cadence structure, agent drives
 - **Focused work** — Full session on main weekly focus
+- **Spar** — Ad-hoc idea stress-testing through the filter
 - **Quick hit** — Short window, scope ruthlessly, prevent rabbit holes
 
 ### Intelligence Behaviors
