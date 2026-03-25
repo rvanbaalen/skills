@@ -20,6 +20,7 @@ Public Claude Code skills by Robin van Baalen.
 /plugin install version-bump@rvanbaalen
 /plugin install driverjs-guide@rvanbaalen
 /plugin install cofounder@rvanbaalen
+/plugin install pm@rvanbaalen
 ```
 
 ## Skills
@@ -53,3 +54,24 @@ Then type `/cofounder` to start. First run triggers onboarding automatically.
 | `spar` | Stress-test ideas through the business filter | `/cofounder:spar` |
 | `action-brief` | Create scoped action briefs | `/cofounder:action-brief` |
 | `review` | Review state, progress, and priorities | `/cofounder:review` |
+
+## PM
+
+A delivery-focused project manager agent that enforces deadlines, tracks estimates vs. actuals, detects anti-patterns (scope creep, gold plating, yak shaving, etc.), and holds you accountable. Adapts tone based on timeline pressure — supportive when there's slack, blunt when you're overdue.
+
+```
+/plugin install pm@rvanbaalen
+```
+
+Then type `/pm` to start. First run triggers project setup automatically.
+
+| Skill | Description | Invoke |
+|-------|-------------|--------|
+| `pm` | Orchestrator — entry point, spawns the agent | `/pm:pm` |
+| `setup` | Project onboarding and reconfiguration | `/pm:setup` |
+| `plan` | Define milestones, tasks, and estimates | `/pm:plan` |
+| `session-start` | Beginning-of-session check-in | `/pm:session-start` |
+| `session-end` | End-of-session wrap-up with estimate tracking | `/pm:session-end` |
+| `review` | Progress analysis, estimation accuracy, overrule tracking | `/pm:review` |
+| `reprioritize` | Reshuffle tasks to protect deadlines | `/pm:reprioritize` |
+| `status-report` | Export-ready status for clients, teams, or personal logs | `/pm:status-report` |
