@@ -72,7 +72,7 @@
       "name": "pm",
       "source": "./plugins/pm",
       "description": "Delivery-focused project manager that enforces deadlines, tracks estimates, detects drift, and holds you accountable",
-      "version": "1.0.0"
+      "version": "2.0.0"
     }
   ]
 }
