@@ -17,7 +17,7 @@ Estimates MUST come from the user. The PM NEVER invents estimates. This is a har
 | Data point | Where it's stored |
 |-----------|-------------------|
 | User's raw estimate | `tasks.md` Estimate column |
-| Calibrated estimate | PM's internal timeline calculations only (not persisted in a file) |
+| Calibrated estimate | PM's internal timeline calculations; also logged in `estimates.md` Estimated column when task completes (for accuracy tracking) |
 | Actual duration | Computed from journal timestamps (TASK_START to TASK_DONE) |
 | Accuracy tracking | `estimates.md` — User Est, Actual, Ratio columns |
 
