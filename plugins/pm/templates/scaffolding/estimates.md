@@ -1,4 +1,4 @@
 # Estimation Log
 
-| Task | Category | Estimated | Actual | Ratio | Date |
-|------|----------|-----------|--------|-------|------|
+| Task | Category | Estimated | User Est | Actual | Ratio | Date |
+|------|----------|-----------|----------|--------|-------|------|
