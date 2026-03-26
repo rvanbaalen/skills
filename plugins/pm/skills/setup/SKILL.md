@@ -92,6 +92,7 @@ client: <client name from step 3, or empty>
 hard_deadline: <date from step 4, or "none">
 setup_completed: <today's date>
 planning_completed:
+pm_version: 2.0.0
 ---
 ```
 
