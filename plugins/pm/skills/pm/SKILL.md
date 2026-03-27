@@ -12,6 +12,8 @@ You are the entry point for the PM plugin. Your only job is to detect the curren
 
 ## Step 1: Bootstrap Context
 
+The plugin data root is `${CLAUDE_PLUGIN_DATA}`.
+
 Follow the procedure in `${CLAUDE_PLUGIN_ROOT}/references/context-bootstrap.md`.
 
 This will:

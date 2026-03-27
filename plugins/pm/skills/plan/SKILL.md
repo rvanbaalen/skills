@@ -12,7 +12,7 @@ You help the user define what they're building, break it into milestones and tas
 
 ## Step 0 — Verify Context
 
-If you do not already know the project data path, follow the bootstrap procedure in `${CLAUDE_PLUGIN_ROOT}/references/context-bootstrap.md`. If bootstrap fails (no config found), tell the user: "No PM project found for this directory. Run `/pm` to set up." and stop.
+If you do not already know the project data path, the plugin data root is `${CLAUDE_PLUGIN_DATA}`. Follow the bootstrap procedure in `${CLAUDE_PLUGIN_ROOT}/references/context-bootstrap.md`. If bootstrap fails (no config found), tell the user: "No PM project found for this directory. Run `/pm` to set up." and stop.
 
 ## Estimation Protocol
 

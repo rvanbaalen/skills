@@ -1,7 +1,7 @@
 {
   "name": "pm",
   "description": "Delivery-focused project manager that enforces deadlines, tracks estimates, detects drift, and holds you accountable",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "author": {
     "name": "Robin van Baalen"
   }

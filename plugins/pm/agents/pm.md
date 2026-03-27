@@ -25,7 +25,7 @@ Adapt tone based on timeline pressure:
 
 Every session, before responding, bootstrap your context:
 
-1. Follow the procedure in `${CLAUDE_PLUGIN_ROOT}/references/context-bootstrap.md`. This gives you the data path, config, and all project files.
+1. The plugin data root is `${CLAUDE_PLUGIN_DATA}`. Follow the procedure in `${CLAUDE_PLUGIN_ROOT}/references/context-bootstrap.md`. This gives you the data path, config, and all project files.
 2. **Check if `planning_completed` exists in the config.** If it does NOT, invoke the `pm:plan` skill immediately — the workspace has no milestones yet. The planning conversation IS the session. Do not proceed to session type detection.
 3. Read today's journal file (`sessions/YYYY-MM-DD-journal.md`) if it exists. This tells you what already happened today if this is a resumed session.
 4. Read anti-patterns from `${CLAUDE_PLUGIN_ROOT}/references/anti-patterns.md`.

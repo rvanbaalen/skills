@@ -20,7 +20,7 @@ This produces an 8-character hex string (the project ID).
 
 ### 2. Resolve data path
 
-The project data lives at: `${CLAUDE_PLUGIN_DATA}/<project-id>/`
+The plugin data root was provided by the skill or agent that invoked this procedure. The project data lives at: `<data-root>/<project-id>/`
 
 ### 3. Read config
 
