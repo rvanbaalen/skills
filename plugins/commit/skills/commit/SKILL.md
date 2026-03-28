@@ -9,7 +9,10 @@ Commit the current changes using micro commits with conventional commit messages
 
 ## Mode Selection
 
-Before doing anything else, use `AskUserQuestion` to ask the user which mode to use:
+Check `$ARGUMENTS` first:
+- If `$ARGUMENTS` is `i` → use **Interactive** mode
+- If `$ARGUMENTS` is `ni` → use **Non-interactive** mode
+- Otherwise, use `AskUserQuestion` to ask the user:
 
 **Question:** "How would you like to commit?"
 
