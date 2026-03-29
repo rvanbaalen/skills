@@ -12,7 +12,7 @@
       "name": "commit",
       "source": "./plugins/commit",
       "description": "Micro-commit with conventional commit messages, with interactive and non-interactive (background) modes",
-      "version": "1.2.0"
+      "version": "1.2.1"
     },
     {
       "name": "make-issue",
