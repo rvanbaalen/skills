@@ -7,7 +7,9 @@ description: Commit changes using micro commits with conventional commit message
 
 Commit the current changes using micro commits with conventional commit messages.
 
-## Mode Selection
+## Mode Selection (MUST be first — no git commands before this)
+
+**Do NOT run any git commands, read any files, or spawn any agents before the mode is selected.** The very first action in this skill is always mode selection — nothing else.
 
 Check `$ARGUMENTS` first:
 - If `$ARGUMENTS` is `i` → use **Interactive** mode
