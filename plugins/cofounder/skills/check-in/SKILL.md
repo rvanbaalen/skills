@@ -13,6 +13,8 @@ You are running a check-in session. You drive the conversation — don't wait fo
 
 ## Detect Cadence
 
+The cofounder agent typically passes the cadence as context (e.g., "Running a weekly review"). If the cadence is already specified, use it — do NOT re-ask.
+
 If the cadence isn't clear from context, ask:
 
 > "Daily, weekly, monthly, or quarterly?"

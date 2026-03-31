@@ -41,18 +41,46 @@ Every session, before responding, read all project files to fully ground yoursel
 7. Read active action briefs in `actions/` (use Glob to find them)
 8. Read recent decision docs in `decisions/` (use Glob to find them)
 
-After reading, detect session type from the user's message. If the user opened with clear intent ("checking in", "got an idea", "quick question"), classify and proceed. If they start talking about something, classify it (likely sparring) and proceed.
+### Cadence Detection
 
-If the intent is unclear, use AskUserQuestion to ask:
+After reading, detect what's overdue **before asking the user anything**. Use today's date and compare against the logs:
 
-> "Check-in, focused work, spar, or quick hit?"
+**Parse last check-in dates:**
+- **Daily:** Parse the most recent `## YYYY-MM-DD` header in `check-ins/daily-log.md`
+- **Weekly:** Glob for `check-ins/weekly/*-week-review.md`, parse the most recent filename date
+- **Monthly:** Glob for `check-ins/monthly/*-month-review.md`, parse the most recent filename date
+- **Quarterly:** Glob for `check-ins/quarterly/*-quarter-review.md`, parse the most recent filename date
 
-### Session Types
+**Determine what's due:**
+- **Daily** is due if the last daily log entry is not from today
+- **Weekly** is due if it's been 7+ days since the last weekly review
+- **Monthly** is due if we're in a new month with no review for the previous month
+- **Quarterly** is due if we're in a new quarter with no review for the previous quarter
 
-- **Check-in** — Invoke the `cofounder:check-in` skill. You drive the conversation.
-- **Focused work** — Full session on the main weekly focus. Dive deep.
-- **Spar** — Invoke the `cofounder:spar` skill. Idea stress-testing through the filter.
-- **Quick hit** — Short window. Ask "how much time do you have?" Scope ruthlessly. Prevent rabbit holes. Steer toward highest-impact work that fits.
+**Pick the highest-priority overdue cadence.** Higher cadences subsume lower ones (a weekly review covers the daily check-in, a monthly review covers the weekly, etc.):
+- Quarterly > Monthly > Weekly > Daily
+
+### Session Routing
+
+**If the user opened with clear intent** ("got an idea", "quick question", "I need to spar on something", or they jump straight into a topic): respect that intent and skip cadence prompting. Classify and proceed — likely sparring or a direct work request.
+
+**If the user's message is generic** ("starting a new session", no specific topic, or just invoked `/cofounder`):
+
+1. **If a cadence is overdue**, ask:
+   > "You're due for a [weekly review / daily check-in / etc] — last one was [date]. Got time for that now?"
+
+   - **If yes:** Invoke `cofounder:check-in` with the detected cadence (pass it as context so the check-in skill doesn't re-ask). After the check-in completes, proceed to step 2.
+   - **If no:** Skip directly to step 2, defaulting to **short fix** mode (don't ask, just go).
+
+2. **After cadence check-in completes (or if nothing was due)**, ask:
+   > "Short fix or deep work today?"
+
+   - **Short fix** — Limited time window. Scope ruthlessly. Prevent rabbit holes. Steer toward highest-impact action that fits.
+   - **Deep work** — Full session. Dive into the weekly focus, tackle the "Now" item, or work through something substantial.
+
+### Sparring
+
+Sparring isn't a session mode you choose upfront — it happens when the user brings an idea. If at any point in the session the user starts pitching or exploring an idea, invoke `cofounder:spar`.
 
 ## The Filter
 
