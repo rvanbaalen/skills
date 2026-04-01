@@ -79,6 +79,12 @@
       "source": "./plugins/use-agentvision",
       "description": "See and interact with the user's screen using Agent Vision — screenshots, element discovery, clicks, form filling, and visual QA",
       "version": "1.0.0"
+    },
+    {
+      "name": "cpr",
+      "source": "./plugins/cpr",
+      "description": "Commit, Push, and Release — one-command workflow with release-please integration",
+      "version": "1.0.0"
     }
   ]
 }
