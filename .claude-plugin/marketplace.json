@@ -73,6 +73,12 @@
       "source": "./plugins/pm",
       "description": "Delivery-focused project manager that enforces deadlines, tracks estimates, detects drift, and holds you accountable",
       "version": "2.0.0"
+    },
+    {
+      "name": "use-agentvision",
+      "source": "./plugins/use-agentvision",
+      "description": "See and interact with the user's screen using Agent Vision — screenshots, element discovery, clicks, form filling, and visual QA",
+      "version": "1.0.0"
     }
   ]
 }
