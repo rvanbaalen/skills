@@ -38,17 +38,29 @@ Every agent-vision interaction happens within a **session**. The session scopes 
 
 ### Starting a Session
 
+**Preferred: Use `open` when you know which app to target:**
+
+```bash
+agent-vision open Safari
+```
+
+This launches (or activates) the app and automatically selects its window — no manual interaction needed. Use `--title "..."` to filter by window title when the app has multiple windows.
+
+**For manual area selection:**
+
 ```bash
 agent-vision start
 ```
 
-This blocks until the user selects an area (via drag or window click) on the floating toolbar. It prints:
+This blocks until the user selects an area (via drag or window click) on the floating toolbar. Use when you need a custom region or `open` doesn't apply.
+
+Both commands print:
 - Line 1: the session UUID
 - Line 2: area dimensions (e.g., `Area selected: 800x600 at (100, 200)`)
 
 **Capture the UUID and pass it as `--session <uuid>` to every subsequent command.** Shell variables don't persist between separate Bash calls, so either store the UUID in a variable within a single chained command, or copy the literal UUID string into each command.
 
-Ask the user to select the area they want you to interact with. Be specific about what to select:
+When using `start`, ask the user to select the area they want you to interact with. Be specific:
 - "Please select the browser window showing the app"
 - "Please select the area of the form you'd like me to fill out"
 - "Please select the simulator window"

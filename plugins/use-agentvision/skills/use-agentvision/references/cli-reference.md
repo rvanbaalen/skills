@@ -13,9 +13,18 @@
 
 ## Session Management
 
+### `agent-vision open <application> [--title TITLE] [--timeout N]`
+
+**Preferred way to start a session.** Opens (or activates) an application by name and starts a session with its window automatically selected. No manual interaction required. Use `--title` to filter by window title substring (case-insensitive) when the app has multiple windows. Default timeout: 60s. Output format is the same as `start`.
+
+```
+a1b2c3d4-e5f6-7890-abcd-ef1234567890
+Area selected: 1200x800 at (0, 38)
+```
+
 ### `agent-vision start [--timeout N]`
 
-Creates a session and launches the GUI. Blocks until the user selects an area. Prints session UUID (first line) and area dimensions (second line). Default timeout: 60s.
+Creates a session and launches the GUI. Blocks until the user manually selects an area. Prints session UUID (first line) and area dimensions (second line). Default timeout: 60s. Use this when you need manual area selection or `open` doesn't apply.
 
 ```
 a1b2c3d4-e5f6-7890-abcd-ef1234567890
@@ -25,6 +34,10 @@ Area selected: 800x600 at (100, 200)
 ### `agent-vision list`
 
 Lists active sessions.
+
+### `agent-vision focus --session <uuid> [--timeout N]`
+
+Waits for the session window to have keyboard focus. Polls with exponential backoff. Still available for explicit use, but control commands now auto-wait for focus so this is rarely needed.
 
 ### `agent-vision stop --session <uuid>`
 
@@ -78,7 +91,9 @@ Output format:
 
 ## Control Commands
 
-### `agent-vision control click --session <uuid> [--element N | --at X,Y]`
+**Auto-wait for focus:** CGEvent control commands (`--at`, `type` without `--element`, `key`, `scroll`, `drag`) auto-wait for the window to have keyboard focus before executing. Default timeout: 120s, overridable with `--focus-timeout N`. Element-based actions (`--element N`) are focus-free and execute immediately.
+
+### `agent-vision control click --session <uuid> [--element N | --at X,Y] [--focus-timeout N]`
 
 Left-click. Two targeting modes:
 - **`--element N`** (preferred): Uses Accessibility API directly. Focus-free — does not move the cursor or steal focus.
