@@ -1,0 +1,8 @@
+{
+  "name": "cpr",
+  "description": "Commit, Push, and Release — one-command workflow with release-please integration",
+  "version": "1.0.0",
+  "author": {
+    "name": "Robin van Baalen"
+  }
+}
