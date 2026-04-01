@@ -1,0 +1,82 @@
+[
+  {
+    "query": "I just pushed the new pricing page to staging at localhost:3000/pricing — can you take a look at it and tell me if the layout matches the figma? the cards should be 3 across on desktop with equal height. use agent-vision to check",
+    "should_trigger": true
+  },
+  {
+    "query": "ok i have this internal admin panel open in chrome (it’s behind a vpn so you can’t reach it via url). can you look at the screen and navigate to the Users tab, find the account for test@example.com, and toggle the ‘Premium’ flag?",
+    "should_trigger": true
+  },
+  {
+    "query": "i need to fill out this long onboarding form in our app — there are like 12 fields across 3 steps. the data is in /tmp/user-data.json. can you just do it for me? the form is open in safari right now",
+    "should_trigger": true
+  },
+  {
+    "query": "the ios simulator is running my expo app. can you scroll through the home feed screen and take screenshots of each section? i want to see how the cards render with real data before the demo tomorrow",
+    "should_trigger": true
+  },
+  {
+    "query": "I’m working on a CSS animation for a button hover state — can you watch the browser while I hover over the button and tell me if the transition looks smooth or if it jitters? take a few screenshots",
+    "should_trigger": true
+  },
+  {
+    "query": "look at my screen — i have mail.app open and i need to find the email from sarah@acme.co about the contract renewal, open it, and download the PDF attachment",
+    "should_trigger": true
+  },
+  {
+    "query": "can you visually compare the before and after of my header component? I changed the font weight from 500 to 600 and the padding from 16px to 20px. the browser is open with hot reload",
+    "should_trigger": true
+  },
+  {
+    "query": "I’ve got the android emulator open with our React Native app. navigate to Settings > Account > Privacy and toggle off ‘Share usage data’. the menu path is a bit nested",
+    "should_trigger": true
+  },
+  {
+    "query": "take a screenshot of what’s on my screen right now — i want to capture the current state of the dashboard before i start refactoring the chart component",
+    "should_trigger": true
+  },
+  {
+    "query": "check the UI of my app — i just changed the dark mode colors and something looks off with the sidebar contrast. the app is running at localhost:5173 and i have it open in firefox",
+    "should_trigger": true
+  },
+  {
+    "query": "write playwright e2e tests for our checkout flow — it should test the cart page, payment form, and confirmation. we use stripe test cards. here’s the test file at tests/checkout.spec.ts",
+    "should_trigger": false
+  },
+  {
+    "query": "i have this scanned pdf of an old receipt at ~/Documents/receipt-2024.pdf — can you extract the line items and total into a csv? the text is a bit blurry but should be readable",
+    "should_trigger": false
+  },
+  {
+    "query": "audit the accessibility of my React components — check for missing aria labels, keyboard navigation issues, and color contrast ratios in src/components/. don’t look at the screen, just review the code",
+    "should_trigger": false
+  },
+  {
+    "query": "generate a wireframe mockup for a new dashboard layout — i want a sidebar nav, main content area with 4 KPI cards, and a data table below. output as svg or html",
+    "should_trigger": false
+  },
+  {
+    "query": "i’ve got two png screenshots in /tmp (old-design.png and new-design.png) from last week’s PR — can you diff them and tell me what visual changes were made?",
+    "should_trigger": false
+  },
+  {
+    "query": "build a puppeteer script that takes screenshots of our marketing site at different breakpoints (320, 768, 1024, 1440) for responsive testing. save them to ./screenshots/",
+    "should_trigger": false
+  },
+  {
+    "query": "i need to add a screenshot capture feature to our electron app — the user clicks a button and it saves the current window to disk. look at src/main.ts for the existing ipc handlers",
+    "should_trigger": false
+  },
+  {
+    "query": "set up cypress component testing for our design system — i want visual regression tests that compare rendered components against baseline snapshots in cypress/snapshots/",
+    "should_trigger": false
+  },
+  {
+    "query": "review my tailwind config and suggest improvements to the color scale — i think the grays are too warm and the primary blue doesn’t have enough contrast with the background",
+    "should_trigger": false
+  },
+  {
+    "query": "help me configure the macos screen recording api in swift — i want to build something like agent-vision that captures a region of the screen programmatically",
+    "should_trigger": false
+  }
+]
