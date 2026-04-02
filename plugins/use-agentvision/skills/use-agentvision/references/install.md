@@ -3,13 +3,12 @@
 ## Requirements
 
 - macOS 14+ (Sonoma), Apple Silicon
-- Xcode 16+ (builds from source via Homebrew)
+- Homebrew
 
 ## Install via Homebrew
 
 ```bash
-brew tap rvanbaalen/agent-vision
-brew install agent-vision
+brew install rvanbaalen/tap/agent-vision
 ```
 
 ## Post-install: Grant Permissions

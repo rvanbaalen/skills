@@ -30,7 +30,7 @@ Check that agent-vision is installed:
 which agent-vision
 ```
 
-If not found, read `references/install.md` for installation instructions and guide the user through it. The install is a simple `brew tap rvanbaalen/agent-vision && brew install agent-vision`. After install, the user needs to grant Screen Recording and Accessibility permissions in System Settings.
+If not found, read `references/install.md` for installation instructions and guide the user through it. The install is a simple `brew install rvanbaalen/tap/agent-vision`. After install, the user needs to grant Screen Recording and Accessibility permissions in System Settings.
 
 ## Session Lifecycle
 

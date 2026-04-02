@@ -41,8 +41,7 @@ which mdreader
 If mdreader is not found, install it:
 
 ```bash
-brew tap rvanbaalen/mdreader
-brew install mdreader
+brew install rvanbaalen/tap/mdreader
 ```
 
 If brew is not available or the install fails, tell the user mdreader couldn't be installed and provide the GitHub link: https://github.com/rvanbaalen/mdreader
