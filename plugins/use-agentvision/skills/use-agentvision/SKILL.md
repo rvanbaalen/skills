@@ -84,6 +84,15 @@ This is the fundamental interaction loop. Every UI interaction follows it:
 
 Element indices change after every UI update. Never reuse indices from a previous scan.
 
+**Filtering large scans**: Complex apps can return 80+ elements. Use `jq` to filter:
+
+```bash
+# Show only accessibility-sourced elements (skip OCR noise)
+agent-vision elements --session <uuid> | jq -r '.elements[] | select(.source=="accessibility") | "\(.index): \(.role) - \"\(.label // "")\" @ (\(.center.x | floor),\(.center.y | floor))"'
+```
+
+This cuts noise dramatically and makes it easier to find the element you need.
+
 ## Element Targeting
 
 Prefer `--element N` over `--at X,Y` in all cases where the target appears in the element scan:
@@ -206,13 +215,41 @@ Use `model: "sonnet"` for these subagents — they're executing a clear plan, no
 - Communicating with the user about what you see
 - Handling errors or unexpected UI states
 
+## Sharing Files and Images via Clipboard
+
+When you need to send a file (image, screenshot, document) into an app, **never navigate Finder**. Finder windows are difficult to control via agent-vision and frequently cause hangs. Instead, copy the file to the macOS clipboard and paste it directly:
+
+### Sending an image (PNG/JPEG)
+
+```bash
+# Copy image to clipboard
+osascript -e 'set the clipboard to (read (POSIX file "/tmp/screenshot.png") as «class PNGf»)'
+
+# Then paste into the target app
+agent-vision control key --session <uuid> --key "cmd+v"
+```
+
+This works in most apps: WhatsApp, Slack, email composers, Notion, etc. After pasting, the app will typically show a preview dialog — scan for a "Send" or "Submit" button and click it.
+
+### Sending other file types
+
+For non-image files, copy the file reference to the clipboard:
+
+```bash
+osascript -e 'set the clipboard to (POSIX file "/path/to/file.pdf")'
+agent-vision control key --session <uuid> --key "cmd+v"
+```
+
+**Why not use the attachment button?** Clicking "Share media", "+", or attachment buttons opens a Finder dialog, which is a separate window with complex navigation. The clipboard approach bypasses this entirely and is faster, more reliable, and doesn't leave stray Finder windows open.
+
 ## Application-Specific Tips
 
 | App Type | Key Behavior |
 |----------|-------------|
 | **Web browser** | Use Cmd+L for the address bar. Wait ~2s after page load for accessibility tree. |
+| **Messaging app** | Use search to find contacts/chats. The active chat often changes role from `button` to `staticText` — this is normal and means it's already selected. Use clipboard paste (Cmd+V) to share images instead of the attachment button. |
 | **Mobile emulator** | Use `drag` not `scroll`. Touch UIs respond to swipe gestures. |
-| **Email client** | Use search bar to find emails. Rows have many overlapping elements — always use `--element`. |
+| **Email client** | Use search bar to find emails. Rows have many overlapping elements — always use `--element`. Use clipboard paste for attachments. |
 | **IDE / editor** | Use Cmd+P for quick file nav. |
 | **Terminal** | Text-based — use `type` and `key` only. No clickable elements. |
 | **Canvas / design tool** | Most elements won't appear in scan. Must use `--at X,Y` with `preview`. |
@@ -260,6 +297,15 @@ Use `model: "sonnet"` for these subagents — they're executing a clear plan, no
 3. Wait, re-scan, verify you arrived at the right place
 4. Repeat until you reach the destination
 
+### Sending Messages (WhatsApp, Slack, etc.)
+
+1. Open the app with `agent-vision open WhatsApp`
+2. Scan elements and find the target conversation (use search if not visible)
+3. Click the conversation to open it
+4. Find the `textField` element (e.g., "Compose message") and type into it with `--element N`
+5. Press `enter` to send
+6. To attach an image: copy to clipboard with `osascript`, then `cmd+v` to paste, then click Send in the preview dialog
+
 ### Multi-Page Screenshots
 
 Delegate to a sonnet subagent:
@@ -276,5 +322,10 @@ If a command fails, check `references/cli-reference.md` for the error reference 
 - **Permission errors** — ask user to grant Screen Recording / Accessibility in System Settings
 - **Stale elements** — re-run `elements` before every interaction
 - **Element not found** — the UI changed since the last scan, re-scan
+- **`elements` command times out waiting for focus** — run `agent-vision focus --session <uuid> --timeout 10` explicitly before scanning. This can happen right after `open` if the app takes a moment to settle.
+- **Session area is misaligned** — if elements have `x` values that start well inside the area (e.g., window bounds at x=400 when the area is 1046 wide), the captured area is offset from the actual window. The conversation pane or key UI regions may be cut off on the right. Fix: stop the session and re-run `agent-vision open <app>` to get a fresh, correctly aligned session.
+- **OCR noise from background windows** — element scans can pick up OCR `staticText` from windows behind the target app. When filtering elements, prefer `source: "accessibility"` over `source: "ocr"` for reliable targeting. OCR results from unrelated windows will have coordinates outside the target app's bounds.
+
+**Diagnosing alignment issues**: After starting a session, verify the area covers the full window by comparing the area dimensions against the window's accessibility bounds (element with `role: "unknown"` and the app name as label). If the window bounds extend beyond the area width, the session is misaligned.
 
 When stuck, capture a screenshot and describe what you see to the user. Ask for their help rather than guessing wildly.
