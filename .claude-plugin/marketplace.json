@@ -85,6 +85,12 @@
       "source": "./plugins/cpr",
       "description": "Commit, Push, and Release — one-command workflow with release-please integration",
       "version": "1.0.0"
+    },
+    {
+      "name": "open-markdown",
+      "source": "./plugins/open-markdown",
+      "description": "Offer to open markdown documents (plans, specs, design docs) in mdreader for comfortable reading",
+      "version": "1.0.0"
     }
   ]
 }
