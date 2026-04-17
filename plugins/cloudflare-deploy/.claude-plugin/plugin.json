@@ -1,0 +1,7 @@
+{
+  "name": "cloudflare-deploy",
+  "description": "Deploy Astro sites to Cloudflare Workers with custom domains — setup, wrangler config, DNS, and deployment verification",
+  "author": {
+    "name": "Robin van Baalen"
+  }
+}
