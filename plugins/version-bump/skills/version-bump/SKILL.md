@@ -1,6 +1,7 @@
 ---
 name: version-bump
 description: Checks for changed plugin/skill files in marketplace projects and suggests semver version bumps before pushing. Use this skill whenever the user wants to push changes (git push, "push this", "push to remote") and the working directory contains a .claude-plugin/marketplace.json file — even if the user doesn't mention versions. Also trigger when the user explicitly mentions version bumping, releasing plugins, or preparing marketplace updates.
+allowed-tools: Bash(git diff *) Bash(git log *) Bash(git status *)
 ---
 
 # Version Bump

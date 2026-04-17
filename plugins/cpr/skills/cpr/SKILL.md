@@ -1,6 +1,7 @@
 ---
 name: cpr
 description: "User-invokable only via /cpr. Commit, Push, and Release in one command. Commits all changes as non-interactive micro-commits (conventional commits), pushes to remote, then handles the full release-please cycle: waits for the PR, merges it, and monitors the release workflow to completion. Do NOT auto-trigger this skill."
+allowed-tools: Bash(git add *) Bash(git commit *) Bash(git status *) Bash(git diff *) Bash(git log *) Bash(git push *) Bash(gh pr *) Bash(gh run *)
 ---
 
 # CPR — Commit, Push, and Release

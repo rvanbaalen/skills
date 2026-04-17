@@ -1,7 +1,6 @@
 {
-  "name": "rvanbaalen",
+  "name": "lottie-animator",
   "description": "Generate professional Lottie animations from static SVGs. Replaces After Effects for motion graphics.",
-  "version": "1.0.0",
   "author": {
     "name": "obeskay",
     "url": "https://github.com/obeskay"

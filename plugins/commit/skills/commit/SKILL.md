@@ -1,6 +1,8 @@
 ---
 name: commit
 description: Commit changes using micro commits with conventional commit messages. Analyzes git diff, groups related files, and proposes commits for approval. Supports interactive and non-interactive (background) modes. Use when the user wants to commit their changes.
+argument-hint: "[i|ni]"
+allowed-tools: Bash(git add *) Bash(git commit *) Bash(git status *) Bash(git diff *) Bash(git log *) Bash(git push *)
 ---
 
 # Commit Changes

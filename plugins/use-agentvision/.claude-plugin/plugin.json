@@ -1,7 +1,6 @@
 {
-  "name": "rvanbaalen",
+  "name": "use-agentvision",
   "description": "See and interact with the user's screen using Agent Vision",
-  "version": "1.0.0",
   "author": {
     "name": "Robin van Baalen"
   }

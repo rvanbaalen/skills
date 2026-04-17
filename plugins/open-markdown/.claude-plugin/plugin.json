@@ -1,7 +1,6 @@
 {
-  "name": "rvanbaalen",
+  "name": "open-markdown",
   "description": "Offer to open markdown documents (plans, specs, design docs) in mdreader for comfortable reading",
-  "version": "1.0.0",
   "author": {
     "name": "Robin van Baalen"
   }

@@ -1,7 +1,6 @@
 {
-  "name": "rvanbaalen",
+  "name": "react-query",
   "description": "TanStack Query v5 (React Query) review and coding standards",
-  "version": "1.0.0",
   "author": {
     "name": "Robin van Baalen"
   }

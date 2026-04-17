@@ -1,7 +1,6 @@
 {
-  "name": "rvanbaalen",
+  "name": "time-registration",
   "description": "Git-based time registration summaries",
-  "version": "1.0.0",
   "author": {
     "name": "Robin van Baalen"
   }

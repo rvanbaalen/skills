@@ -12,85 +12,91 @@
       "name": "commit",
       "source": "./plugins/commit",
       "description": "Micro-commit with conventional commit messages, with interactive and non-interactive (background) modes",
-      "version": "1.2.1"
+      "version": "1.3.0"
     },
     {
       "name": "make-issue",
       "source": "./plugins/make-issue",
       "description": "Create a new GitHub issue with template, type, and label selection",
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "version-bump",
       "source": "./plugins/version-bump",
       "description": "Auto-suggest semver version bumps for changed plugins before pushing",
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "ocr-document-processor",
       "source": "./plugins/ocr-document-processor",
       "description": "Extract text from images and scanned PDFs using OCR. Supports 100+ languages, table detection, structured output, and batch processing.",
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "svg-precision",
       "source": "./plugins/svg-precision",
       "description": "Deterministic SVG generation, validation, and rendering for icons, diagrams, charts, UI mockups, and technical drawings.",
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "time-registration",
       "source": "./plugins/time-registration",
       "description": "Git-based time registration summaries",
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "lottie-animator",
       "source": "./plugins/lottie-animator",
       "description": "Generate professional Lottie animations from static SVGs. Replaces After Effects for motion graphics.",
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "react-query",
       "source": "./plugins/react-query",
       "description": "TanStack Query v5 (React Query) review and coding standards",
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "driverjs-guide",
       "source": "./plugins/driverjs-guide",
       "description": "Driver.js product tours, onboarding flows, and element highlighting reference",
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "cofounder",
       "source": "./plugins/cofounder",
       "description": "Critical-thinking business co-founder that enforces prioritization, challenges assumptions, and becomes smarter over time",
-      "version": "1.1.0"
+      "version": "1.2.0"
     },
     {
       "name": "pm",
       "source": "./plugins/pm",
       "description": "Delivery-focused project manager that enforces deadlines, tracks estimates, detects drift, and holds you accountable",
-      "version": "2.0.0"
+      "version": "2.0.1"
     },
     {
       "name": "use-agentvision",
       "source": "./plugins/use-agentvision",
       "description": "See and interact with the user's screen using Agent Vision — screenshots, element discovery, clicks, form filling, and visual QA",
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "cpr",
       "source": "./plugins/cpr",
       "description": "Commit, Push, and Release — one-command workflow with release-please integration",
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "open-markdown",
       "source": "./plugins/open-markdown",
       "description": "Offer to open markdown documents (plans, specs, design docs) in mdreader for comfortable reading",
-      "version": "1.0.0"
+      "version": "1.1.0"
+    },
+    {
+      "name": "cloudflare-deploy",
+      "source": "./plugins/cloudflare-deploy",
+      "description": "Deploy Astro sites to Cloudflare Workers with custom domains — setup, wrangler config, DNS, and deployment verification",
+      "version": "0.1.0"
     }
   ]
 }

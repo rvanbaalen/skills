@@ -1,6 +1,7 @@
 ---
 name: time-registration
-description: Summarize recent git work for time registration. Use when the user asks what they worked on, needs a time log, wants a work summary, asks about yesterday's/last week's work, or invokes /rvanbaalen:time-registration. Accepts an optional time period argument (defaults to yesterday).
+description: Summarize recent git work for time registration. Use when the user asks what they worked on, needs a time log, wants a work summary, asks about yesterday's/last week's work, or invokes /time-registration:time-registration. Accepts an optional time period argument (defaults to yesterday).
+argument-hint: "[period]"
 ---
 
 # Time Registration

@@ -1,7 +1,6 @@
 {
-  "name": "rvanbaalen",
+  "name": "driverjs-guide",
   "description": "Driver.js product tours, onboarding flows, and element highlighting reference",
-  "version": "1.0.0",
   "author": {
     "name": "Robin van Baalen"
   }
