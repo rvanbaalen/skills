@@ -36,9 +36,11 @@ Spawn a background Agent (use `model: "sonnet"` and `run_in_background: true`) w
 4. Execute commits using the commit message format and rules below
 5. Try to push — push if the branch already tracks a remote; if on an untracked branch, push with `-u origin <branch>`; if on `main`/`master`, do NOT push and mention it in the result
 
-After dispatching the agent, inform the user: "Committing in the background — you'll be notified when it's done." Then stop — do not block the conversation.
+After dispatching the agent, use the `Monitor` tool on the background agent to stream its progress events (each stdout line arrives as a notification). This lets you surface meaningful milestones — e.g., "staged 3 files", "committed: feat(auth): …", "pushed to origin" — to the user as they happen, without polling or sleeping.
 
-When the background agent completes, summarize what it committed (and whether it pushed) to the user.
+Then inform the user: "Committing in the background — I'll report progress as it commits." Do not block the conversation; continue with other work between monitor notifications.
+
+When the background agent completes, summarize what it committed (and whether it pushed) to the user. If Monitor surfaced errors mid-run (failed hook, push rejected, ambiguous group skipped), include those in the summary.
 
 ## Process (Interactive Mode)
 
