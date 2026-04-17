@@ -1,0 +1,10 @@
+{
+  "eval_id": 1,
+  "eval_name": "eval-write-plan",
+  "prompt": "Create an implementation plan for migrating our database from MySQL to PostgreSQL. Save it to plan.md.",
+  "assertions": [
+    {"text": "Plan file was written", "type": "output_exists"},
+    {"text": "Offered to open in mdreader via AskUserQuestion", "type": "behavior"},
+    {"text": "Checked mdreader availability first", "type": "behavior"}
+  ]
+}

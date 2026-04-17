@@ -1,0 +1,8 @@
+{
+  "eval_id": 2,
+  "configuration": "without_skill",
+  "expectations": [
+    {"text": "Review document was written", "passed": true, "evidence": "review.md written to outputs directory"},
+    {"text": "No mdreader mention (baseline)", "passed": true, "evidence": "Transcript contains no mention of mdreader or AskUserQuestion"}
+  ]
+}

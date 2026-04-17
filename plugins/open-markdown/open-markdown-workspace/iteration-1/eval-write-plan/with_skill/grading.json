@@ -1,0 +1,9 @@
+{
+  "eval_id": 1,
+  "configuration": "with_skill",
+  "expectations": [
+    {"text": "Plan file was written", "passed": true, "evidence": "plan.md written to /tmp/open-markdown-test-project/plan.md and copied to outputs"},
+    {"text": "Offered to open in mdreader via AskUserQuestion", "passed": true, "evidence": "Transcript step 6: Would have asked 'I've written plan.md — would you like to open it in mdreader?' with Yes/No options"},
+    {"text": "Checked mdreader availability first", "passed": true, "evidence": "Transcript step 5: Ran 'which mdreader', found at /opt/homebrew/bin/mdreader"}
+  ]
+}

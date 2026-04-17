@@ -1,0 +1,9 @@
+{
+  "eval_id": 3,
+  "eval_name": "eval-trivial-edit",
+  "prompt": "Fix the typo in README.md — change 'recieve' to 'receive' on line 12",
+  "assertions": [
+    {"text": "Typo was fixed in README.md", "type": "output_correct"},
+    {"text": "Did NOT offer mdreader — recognized this as a trivial edit", "type": "behavior"}
+  ]
+}

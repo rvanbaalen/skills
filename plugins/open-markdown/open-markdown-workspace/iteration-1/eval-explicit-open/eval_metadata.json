@@ -1,0 +1,9 @@
+{
+  "eval_id": 4,
+  "eval_name": "eval-explicit-open",
+  "prompt": "Open the plan.md file in my project",
+  "assertions": [
+    {"text": "Opened mdreader directly without asking — user explicitly requested open", "type": "behavior"},
+    {"text": "Used absolute path in mdreader command", "type": "behavior"}
+  ]
+}

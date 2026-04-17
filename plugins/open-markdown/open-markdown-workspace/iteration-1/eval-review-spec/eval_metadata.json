@@ -1,0 +1,10 @@
+{
+  "eval_id": 2,
+  "eval_name": "eval-review-spec",
+  "prompt": "Review the spec in docs/api-spec.md and suggest improvements",
+  "assertions": [
+    {"text": "Review document was written", "type": "output_exists"},
+    {"text": "Offered to open review output in mdreader via AskUserQuestion", "type": "behavior"},
+    {"text": "Checked mdreader availability first", "type": "behavior"}
+  ]
+}

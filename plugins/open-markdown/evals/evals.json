@@ -1,0 +1,33 @@
+{
+  "skill_name": "open-markdown",
+  "evals": [
+    {
+      "id": 1,
+      "name": "eval-write-plan",
+      "prompt": "Create an implementation plan for migrating our database from MySQL to PostgreSQL. Save it to plan.md.",
+      "expected_output": "Should write plan.md AND offer to open it in mdreader via AskUserQuestion",
+      "files": []
+    },
+    {
+      "id": 2,
+      "name": "eval-review-spec",
+      "prompt": "Review the spec in docs/api-spec.md and suggest improvements",
+      "expected_output": "Should offer to open the spec file in mdreader when presenting the review, since the user is working with a spec document",
+      "files": ["docs/api-spec.md"]
+    },
+    {
+      "id": 3,
+      "name": "eval-trivial-edit",
+      "prompt": "Fix the typo in README.md — change 'recieve' to 'receive' on line 12",
+      "expected_output": "Should NOT offer to open in mdreader — this is a trivial edit",
+      "files": ["README.md"]
+    },
+    {
+      "id": 4,
+      "name": "eval-explicit-open",
+      "prompt": "Open the plan.md file in my project",
+      "expected_output": "Should open plan.md directly with mdreader without asking — user explicitly asked to open it",
+      "files": ["plan.md"]
+    }
+  ]
+}

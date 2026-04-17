@@ -1,0 +1,8 @@
+{
+  "eval_id": 4,
+  "configuration": "with_skill",
+  "expectations": [
+    {"text": "Opened mdreader directly without asking — user explicitly requested open", "passed": true, "evidence": "Transcript step 4: 'Skip the question — open directly'. Did not issue AskUserQuestion."},
+    {"text": "Used absolute path in mdreader command", "passed": true, "evidence": "Command: 'mdreader /tmp/open-markdown-test-project/plan.md'"}
+  ]
+}

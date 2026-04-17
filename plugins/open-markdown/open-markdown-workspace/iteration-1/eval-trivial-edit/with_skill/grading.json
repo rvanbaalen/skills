@@ -1,0 +1,8 @@
+{
+  "eval_id": 3,
+  "configuration": "with_skill",
+  "expectations": [
+    {"text": "Typo was fixed in README.md", "passed": true, "evidence": "Edit tool changed 'recieve' to 'receive' in README.md"},
+    {"text": "Did NOT offer mdreader — recognized this as a trivial edit", "passed": true, "evidence": "Transcript explicitly states: 'The skill did NOT trigger' and 'The AskUserQuestion about mdreader was not issued'"}
+  ]
+}

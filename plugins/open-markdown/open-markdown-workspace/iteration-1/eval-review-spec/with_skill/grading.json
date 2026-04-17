@@ -1,0 +1,9 @@
+{
+  "eval_id": 2,
+  "configuration": "with_skill",
+  "expectations": [
+    {"text": "Review document was written", "passed": true, "evidence": "api-spec-review.md written to outputs directory with 11 findings"},
+    {"text": "Offered to open review output in mdreader via AskUserQuestion", "passed": true, "evidence": "Transcript step 6: Would have asked 'I've written api-spec-review.md — would you like to open it in mdreader?' with Yes/No options"},
+    {"text": "Checked mdreader availability first", "passed": true, "evidence": "Transcript step 5: Would have run 'which mdreader'"}
+  ]
+}

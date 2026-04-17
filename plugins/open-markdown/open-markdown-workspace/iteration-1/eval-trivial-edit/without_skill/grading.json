@@ -1,0 +1,8 @@
+{
+  "eval_id": 3,
+  "configuration": "without_skill",
+  "expectations": [
+    {"text": "Typo was fixed in README.md", "passed": true, "evidence": "Edit tool fixed the typo"},
+    {"text": "No mdreader mention (baseline)", "passed": true, "evidence": "No mention of mdreader in transcript"}
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "eval_id": 4,
+  "configuration": "without_skill",
+  "expectations": [
+    {"text": "No mdreader — baseline just read the file inline", "passed": true, "evidence": "Without skill, agent used Read tool to display file contents. No viewer launched."}
+  ]
+}
