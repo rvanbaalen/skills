@@ -1,6 +1,6 @@
 {
   "name": "use-agentvision",
-  "description": "See and interact with the user's screen using Agent Vision",
+  "description": "See and interact with the user's screen using Agent Vision — screenshots, element discovery, clicks, form filling, and visual QA",
   "author": {
     "name": "Robin van Baalen"
   }
