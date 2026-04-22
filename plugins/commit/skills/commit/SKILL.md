@@ -24,38 +24,84 @@ Check `$ARGUMENTS` first:
 - **Interactive** — propose each commit for approval
 - **Non-interactive** — commit in the background (you can keep working)
 
+## Session-scoping (runs in BOTH modes, before anything else)
+
+The point of this skill is to commit *the work we just did together*, not whatever else happens to be dirty in the working tree (a half-edited file from before the session, a stray local config tweak, etc.). Always scope to session-touched files first, then explicitly opt extras in.
+
+Do this in the parent conversation **before** dispatching any background agent — the parent is the only one with the session context needed to know which files were touched.
+
+### 1. Build the session-touched set
+
+From the current conversation, list every file path that was modified in this session via:
+
+- `Edit`, `Write`, `NotebookEdit` tool calls
+- `Bash` commands that wrote to files (e.g., `mv`, `cp` into a tracked path, code generators, `npm install` for lockfiles, formatters that ran on specific paths)
+
+Normalize paths to be relative to the repo root. Call this set `SESSION_FILES`.
+
+If `SESSION_FILES` is empty (e.g., the user invoked `/commit` without any prior edits this session), skip straight to step 3 and treat *all* dirty files as "extras" requiring explicit confirmation.
+
+### 2. Diff against git state
+
+Run `git status --porcelain` to get the full set of dirty paths (`DIRTY_FILES`: modified, staged, and untracked).
+
+Compute:
+- `IN_SCOPE = SESSION_FILES ∩ DIRTY_FILES` — what we'll commit
+- `EXTRAS  = DIRTY_FILES − SESSION_FILES` — pre-existing dirt the session did not touch
+- `MISSING = SESSION_FILES − DIRTY_FILES` — session-touched files that have no diff (already committed mid-session, or reverted) — just ignore these
+
+### 3. Confirm extras (if any)
+
+If `EXTRAS` is non-empty, use `AskUserQuestion`. Put the actual file list in the question text so the user can see what they're deciding on:
+
+**Question text:** "Found N file(s) changed outside this session: `<path1>`, `<path2>`, … . Include them in the commits?"
+
+**Options:**
+- **Session only** — commit just the files this session touched (default-safe)
+- **Include all** — also commit the extras
+- **Pick files** — list each extra and ask per-file (use a follow-up `AskUserQuestion` with one option per file: include / skip)
+
+Update `IN_SCOPE` based on the answer. If `IN_SCOPE` ends up empty, tell the user there's nothing to commit and stop.
+
+### 4. Hand off to the chosen mode
+
+Pass `IN_SCOPE` (the explicit file list) into Interactive or Non-interactive mode. From this point on, **never use `git add .`, `git add -A`, or `git add -u`** — only stage paths from `IN_SCOPE`.
+
 ## Interactive Mode
 
-Run the full interactive workflow described below (analyze, group, propose, commit, push).
+Run the workflow below (analyze, group, propose, commit, push) but restrict every `git diff` / `git add` to paths in `IN_SCOPE`. When grouping, only consider files in `IN_SCOPE`.
 
 ## Non-interactive Mode
 
-Spawn a background Agent (use `model: "sonnet"` and `run_in_background: true`) with a prompt that instructs it to:
+Spawn a background Agent (use `model: "sonnet"` and `run_in_background: true`). The prompt MUST include the explicit `IN_SCOPE` file list and instruct the agent to operate only on those paths.
 
-1. Run the same analysis steps (git status, git diff, git diff --cached, git log)
-2. Group related files using the grouping heuristics below
-3. Auto-approve sensible commits and skip anything ambiguous or risky (e.g., files that look unrelated, partial changes that may break something)
-4. Execute commits using the commit message format and rules below
-5. Try to push — push if the branch already tracks a remote; if on an untracked branch, push with `-u origin <branch>`; if on `main`/`master`, do NOT push and mention it in the result
+Prompt the agent to:
 
-After dispatching the agent, use the `Monitor` tool on the background agent to stream its progress events (each stdout line arrives as a notification). This lets you surface meaningful milestones — e.g., "staged 3 files", "committed: feat(auth): …", "pushed to origin" — to the user as they happen, without polling or sleeping.
+1. Treat the provided file list as the **complete and exclusive** scope. Never run `git add .` / `-A` / `-u`. If `git status` shows other dirty files, leave them alone.
+2. Run scoped analysis: `git diff -- <IN_SCOPE>`, `git diff --cached -- <IN_SCOPE>`, `git log --oneline -10` for style.
+3. Group related files (from `IN_SCOPE` only) using the grouping heuristics below.
+4. Auto-approve sensible commits and skip anything ambiguous or risky (partial changes that may break something).
+5. Execute commits using the commit message format and rules below, staging files by explicit path.
+6. Try to push — push if the branch already tracks a remote; if on an untracked branch, push with `-u origin <branch>`; if on `main`/`master`, do NOT push and mention it in the result.
 
-Then inform the user: "Committing in the background — I'll report progress as it commits." Do not block the conversation; continue with other work between monitor notifications.
+After dispatching the agent, use the `Monitor` tool on the background agent to stream its progress events (each stdout line arrives as a notification). Surface meaningful milestones — e.g., "staged 3 files", "committed: feat(auth): …", "pushed to origin" — as they happen, without polling or sleeping.
 
-When the background agent completes, summarize what it committed (and whether it pushed) to the user. If Monitor surfaced errors mid-run (failed hook, push rejected, ambiguous group skipped), include those in the summary.
+Then inform the user: "Committing N session file(s) in the background — I'll report progress as it commits." Do not block the conversation; continue with other work between monitor notifications.
+
+When the background agent completes, summarize what it committed (and whether it pushed). If Monitor surfaced errors mid-run (failed hook, push rejected, ambiguous group skipped), include those in the summary.
 
 ## Process (Interactive Mode)
 
 ### 1. Analyze changes
 
-Run these in parallel to get the full picture:
+Scope every diff to `IN_SCOPE` (computed during session-scoping). Run these in parallel:
 
-- `git status` — see untracked files and overall state
-- `git diff` — unstaged changes to tracked files
-- `git diff --cached` — already staged changes
+- `git status -- <IN_SCOPE>` — state of the in-scope files
+- `git diff -- <IN_SCOPE>` — unstaged changes
+- `git diff --cached -- <IN_SCOPE>` — already-staged changes
 - `git log --oneline -10` — recent commit style for this repo
 
-If there are no changes (nothing unstaged, staged, or untracked), tell the user there's nothing to commit and stop.
+If `IN_SCOPE` is empty, tell the user there's nothing to commit and stop.
 
 ### 2. Group related files
 
@@ -126,6 +172,7 @@ Match the scope style and conventions visible in the repo's recent git log. If t
 
 - Never add signatures to commit messages (no "Co-authored-by", no "Generated with")
 - Never skip git hooks (no `--no-verify`)
+- Never use `git add .`, `git add -A`, or `git add -u` — always stage explicit paths from `IN_SCOPE`
 - In interactive mode, all user decisions go through `AskUserQuestion` — never wait for freeform input
 - In non-interactive mode, never commit files that look like secrets (.env, credentials, tokens)
 - In non-interactive mode, do NOT push to `main` or `master` — only push feature/topic branches
