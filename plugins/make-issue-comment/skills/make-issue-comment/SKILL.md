@@ -1,7 +1,6 @@
 ---
 name: make-issue-comment
-description: Post a structured investigation/fix comment on the active GitHub PR capturing current findings, root cause, proposed fix, and a progress checklist — and later update progress or mark the comment resolved. Invoke when the user fires `/make-issue-comment`, or says things like "post this as a PR comment", "file these findings on the PR", "update the PR comment", or "mark that comment as resolved".
-disable-model-invocation: true
+description: Post a structured investigation/fix comment on the active GitHub PR capturing findings, root cause, proposed fix, and a progress checklist — and later update progress or mark the comment resolved. Proactively invoke whenever an investigation or debugging session on a PR branch has produced a concrete root cause plus a fix plan (even if the user hasn't asked yet) — the skill's first step is to *propose* posting the comment via AskUserQuestion, so firing it speculatively is cheap. Also invoke on explicit triggers like `/make-issue-comment`, "post this as a PR comment", "file these findings on the PR", "update the PR comment", or "mark that comment as resolved".
 argument-hint: "[new <topic> | update <notes> | resolve]"
 allowed-tools: Bash, Read, AskUserQuestion
 ---
@@ -10,15 +9,29 @@ Post (or update) a structured investigation comment on a GitHub PR. The comment 
 
 This is **not** `/make-issue` (which opens a new GitHub issue). This skill only creates/updates **comments on existing PRs**.
 
+## 0. Decide whether to proceed — propose first if you weren't asked
+
+The skill has two invocation paths, and they deserve different first steps:
+
+- **Explicit invocation** — the user typed `/make-issue-comment`, or wrote something unambiguous like "post this on the PR", "file these findings as a PR comment", "update the comment", "mark the comment resolved". Skip to step 1.
+- **Proactive invocation** — you loaded this skill because you noticed an investigation finished with a concrete root cause and fix plan, and the work is happening on a PR branch, but the user did not ask for a comment. In that case, *do not start drafting*. First confirm interest with `AskUserQuestion`:
+
+  > Question: `Looks like we've landed on a root cause and a fix plan for <one-line topic>. Want me to post a structured investigation comment on the PR so it's captured for later?`
+  > Options:
+  > - **Yes, post a comment** — continue to step 1.
+  > - **Not now** — acknowledge briefly and stop. Do not re-propose in the same conversation unless the user says something new that clearly revives the idea.
+
+Use theory of mind when deciding whether to propose at all. Good signals: the user just confirmed a fix works, you just wrote up a root cause analysis, the branch has an open PR, the conversation has been going for a while and producing durable findings. Bad signals: the investigation is still live, the user is mid-question, you're inside a small bugfix that's already being committed, or the user just dismissed a similar proposal. When in doubt, err toward *not* proposing — interrupting with a pitch is more annoying than failing to pitch.
+
 ## Interpreting `$ARGUMENTS`
 
-Decide intent from the argument, then from the conversation if the argument is empty:
+Once you've decided to proceed, decide *what* to do. Use the argument first, then fall back to conversation signals:
 
 - empty, `new`, or a short topic (e.g. `"swipe edit dead zone"`) → **Create** a new comment.
 - `update` / `update <notes>` / `progress` → **Update** an existing comment (tick boxes, refresh sections, add follow-ups).
 - `resolve` / `mark resolved` / `done` → **Resolve** an existing comment (tick every remaining box, append `[ ✅ **resolved** ]` to the H2).
 
-If the conversation already contains clear "I fixed it" signals and the user runs this without arguments, ask which action they want with `AskUserQuestion`.
+If the conversation already contains clear "I fixed it" signals and the intent is still ambiguous, ask which action they want with `AskUserQuestion` before doing anything else.
 
 ## 1. Identify the target PR
 

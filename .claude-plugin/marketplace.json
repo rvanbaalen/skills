@@ -23,8 +23,8 @@
     {
       "name": "make-issue-comment",
       "source": "./plugins/make-issue-comment",
-      "description": "Post a structured investigation/fix comment on the active GitHub PR, update progress, and mark resolved when done",
-      "version": "0.1.0"
+      "description": "Post a structured investigation/fix comment on the active GitHub PR, update progress, and mark resolved when done. Proactively proposes itself when an investigation lands on a root cause and fix plan.",
+      "version": "0.2.0"
     },
     {
       "name": "version-bump",
