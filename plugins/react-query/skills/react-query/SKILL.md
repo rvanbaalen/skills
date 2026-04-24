@@ -1,230 +1,121 @@
 ---
 name: react-query
 description: >
-  TanStack Query v5 (React Query) best practices, code review, and strict coding standards.
-  Use this skill whenever you encounter or write code involving useQuery, useMutation,
-  useSuspenseQuery, useInfiniteQuery, useQueries, useMutationState, QueryClient,
-  QueryClientProvider, queryOptions, skipToken, or any import from '@tanstack/react-query'.
-  Also trigger when reviewing React data fetching code, replacing useEffect/useState
-  data fetching patterns, implementing cache invalidation, optimistic updates, prefetching,
-  or infinite scroll. Covers query key factories, mutation callback separation, Suspense
-  integration with React 19, and the most dangerous anti-patterns. When in doubt whether
-  this skill applies to React data management code, use it.
+  TanStack Query v5 skill with three modes — code review, v4→v5 migration assistance, and coding
+  guidance while writing v5 code. Trigger whenever code imports from `@tanstack/react-query` or
+  `@tanstack/react-query-devtools`, or uses `useQuery`, `useMutation`, `useSuspenseQuery`,
+  `useSuspenseQueries`, `useSuspenseInfiniteQuery`, `useInfiniteQuery`, `useQueries`,
+  `useMutationState`, `queryOptions`, `skipToken`, `QueryClient`, `QueryClientProvider`,
+  `QueryCache`, `MutationCache`, or `HydrationBoundary`. Also trigger for: auditing React data
+  fetching code, replacing `useEffect`/`useState` fetching patterns, implementing cache
+  invalidation, optimistic updates, prefetching, infinite scroll or pagination, upgrading from
+  React Query v4 to v5, Suspense integration, MSW testing setup for React Query, and
+  authentication/token-refresh wiring around queries. When in doubt whether this skill applies
+  to React data management code, use it.
 ---
 
-# TanStack Query v5 — Review & Coding Standards
+# TanStack Query v5 — Review, Migration & Coding Guide
 
-This skill operates in two modes:
+**Authoritative source:** the [TanStack Query v5 React docs](https://tanstack.com/query/v5/docs/framework/react/overview). Every rule and pattern in this skill is either cited directly to a docs page or explicitly marked as a community best practice. When uncertain, fetch the cited URL and verify — the docs are the source of truth, not this file.
 
-- **Review mode**: Audit existing code and produce a structured report of issues, anti-patterns, and v4-to-v5 migration opportunities
-- **Coding mode**: Follow strict v5 best practices when writing new TanStack Query code
+## How to Use This Skill
 
-For the full API guide and detailed explanations, read [references/tanstack-query-v5-guide.md](references/tanstack-query-v5-guide.md).
+Pick a mode based on what the user is asking for. The modes compose — e.g., a v4 project being upgraded often wants both migration guidance and a review pass after.
 
----
+| Intent | Mode | Primary reference |
+|---|---|---|
+| "Review this code" / "audit my React Query usage" / "check for anti-patterns" | **Review** | `references/review-checklist.md` |
+| "Upgrade from v4" / "migrate to v5" / `cacheTime`/`onSuccess` on `useQuery` spotted | **Migrate** | `references/v5-migration.md` |
+| "Add a query/mutation" / "how do I…" / setting up a new feature | **Code** | `references/coding-standards.md` + topic refs |
 
-## Review Mode
+## Mode 1 — Review
 
-When asked to review TanStack Query usage in a project:
+When asked to audit a codebase:
 
-### Step 1: Discover the project's React Query surface
+1. **Discover surface area.** Search for all imports from `@tanstack/react-query` / `@tanstack/react-query-devtools`, identify the router, locate the `QueryClient` and its `defaultOptions`, enumerate every `useQuery` / `useMutation` / `useSuspenseQuery` / `useInfiniteQuery` / `useQueries` call site, and check for `queryOptions` factories vs scattered inline keys.
+2. **Run the checklist.** Critical issues (C1–C6), warnings (W1–W14), and v4→v5 migrations (M1–M12) are in `references/review-checklist.md` with detection hints and doc URLs per check.
+3. **Emit the report** in the exact structured format in `review-checklist.md` — include file:line, cite the v5 doc URL under **Source**, and give concrete before/after fixes for every finding.
 
-1. Search for all files importing from `@tanstack/react-query` or `@tanstack/react-query-devtools`
-2. Identify the router in use (TanStack Router, React Router, Next.js, Remix, etc.) to assess prefetching patterns
-3. Locate the `QueryClient` instantiation and its default configuration
-4. Find all `useQuery`, `useMutation`, `useSuspenseQuery`, `useInfiniteQuery`, and `useQueries` call sites
-5. Check for `queryOptions` factory files or patterns
-6. Look for query key patterns (inline arrays vs factories)
+Do **not** invent findings to fill the report. If the code is clean, say so.
 
-### Step 2: Run the review checklist
+## Mode 2 — Migrate v4 → v5
 
-Check every item below. Only report findings that actually exist in the codebase.
+Full migration reference lives in `references/v5-migration.md`. TL;DR:
 
-#### Critical Issues (bugs or data integrity problems)
+1. Upgrade the package — v5 requires React ≥ 18 and TypeScript ≥ 4.7.
+2. Run the official codemod for the hook-signature change:
+   ```bash
+   npx jscodeshift@latest ./path/to/src/ \
+     --extensions=ts,tsx \
+     --parser=tsx \
+     --transform=./node_modules/@tanstack/react-query/build/codemods/src/v5/remove-overloads/remove-overloads.cjs
+   ```
+3. Apply manual renames — `cacheTime → gcTime`, `keepPreviousData: true → placeholderData: keepPreviousData`, `suspense: true → useSuspenseQuery`, `useErrorBoundary → throwOnError`, `<Hydrate> → <HydrationBoundary>`, `status === 'loading' → 'pending'`, etc.
+4. Add `initialPageParam` to every `useInfiniteQuery`.
+5. Remove `onSuccess`/`onError`/`onSettled` from `useQuery` configs — relocate to `QueryCache` callbacks or component effects. Mutations keep these callbacks.
+6. Run a review pass (Mode 1) afterward.
 
-| ID | Check | What to look for |
-|----|-------|-------------------|
-| C1 | **Server state copied to client state** | `useState` + `useEffect` that copies `data` from a query into local state. Creates a stale copy that misses background updates. |
-| C2 | **fetch without error checking** | `fetch()` calls used as `queryFn` that don't check `response.ok`. The fetch API does not reject on 4xx/5xx — React Query treats HTTP errors as successful data. |
-| C3 | **Cache mutation** | `setQueryData` updaters that mutate the previous value in-place instead of returning a new reference. Breaks structural sharing. |
-| C4 | **Missing invalidation in onSettled** | Optimistic update mutations that invalidate only in `onSuccess` instead of `onSettled`. On error, the cache keeps stale optimistic data. |
-| C5 | **gcTime < staleTime** | `gcTime` lower than `staleTime` breaks stale-while-revalidate — data gets garbage collected while still considered fresh. |
+## Mode 3 — Code
 
-#### Warnings (anti-patterns and performance issues)
+Writing new v5 code. The full rule set is in `references/coding-standards.md`. The non-negotiables:
 
-| ID | Check | What to look for |
-|----|-------|-------------------|
-| W1 | **staleTime left at zero** | No global `staleTime` configured. Every query refetches on mount, window focus, and reconnect. |
-| W2 | **Scattered inline query keys** | Raw `['todos', id]` arrays spread across files instead of centralized `queryOptions` factories. Typos silently break cache sharing. |
-| W3 | **Custom hooks wrapping useQuery with partial options** | Hooks accepting partial `UseQueryOptions` and spreading them. Breaks type inference — `data` becomes `unknown`. Use `queryOptions` factories instead. |
-| W4 | **Per-component error toasts via useEffect** | Multiple components using the same query key each showing error toasts. Use the global `QueryCache` `onError` callback instead. |
-| W5 | **Object rest destructuring** | `const { data, ...rest } = useQuery(...)` — spread accesses all Proxy properties, subscribing to every change and defeating tracked query optimization. |
-| W6 | **Unreturned invalidation promise** | `onSuccess` calling `invalidateQueries` without `return`. Mutation transitions to success before fresh data arrives, causing a stale flash. |
-| W7 | **Suspense waterfall** | Multiple `useSuspenseQuery` calls in the same component or sibling components under one `<Suspense>`. React 19 stops rendering after the first suspension. Use `useSuspenseQueries` or prefetch in route loaders. |
-| W8 | **initialData trap** | `initialData: []` with `staleTime > 0` creates a phantom cache entry treated as fresh real data, preventing the actual fetch. |
-| W9 | **Overused optimistic updates** | Optimistic updates on form submissions that navigate away or close dialogs. Rollback UX is confusing — reserve for toggles, likes, inline edits. |
-| W10 | **Stale closures in mutation callbacks** | Component-scope values captured in `useMutation` definition callbacks that may be stale by resolution time. Move closure-dependent logic to `mutate()` call-site callbacks. |
-| W11 | **Missing error boundary for Suspense** | `useSuspenseQuery` without a corresponding `<ErrorBoundary>` near the `<Suspense>` boundary. |
-| W12 | **Shared QueryClient in tests** | Test files reusing a single `QueryClient` across tests, causing cache leakage. |
+- **Global `staleTime > 0`** (60s is a good default). `gcTime >= staleTime`.
+- **`QueryClient` at module scope**, never inside a component.
+- **`queryOptions` factories**, never scattered inline keys. Structure keys generic → specific.
+- **`queryKey` includes every variable used in `queryFn`** — treat it like a dependency array.
+- **`response.ok` check** in any `fetch`-based `queryFn`.
+- **`select` for transformation**, not copying to `useState`.
+- **`skipToken` for conditional fetching** (preserves types). `enabled: false` only when manual `refetch` is intended.
+- **Mutations: return the `invalidateQueries` promise from `onSuccess`** so the mutation stays pending until caches are fresh.
+- **Optimistic updates: invalidate in `onSettled`**, not `onSuccess`. Snapshot → cancel → write → rollback on error.
+- **`useSuspenseQuery` + `<ErrorBoundary>` paired with every `<Suspense>`**. Parallel fetches under one boundary use `useSuspenseQueries`.
+- **`initialPageParam` is required** for `useInfiniteQuery`.
+- **Type the `queryFn` return**; don't use manual generics on the hook.
+- **Tests: fresh `QueryClient` per test**, `retry: false`, `gcTime: Infinity`, MSW for network mocking.
 
-#### v4 to v5 Migration
+## v5 Status Flags Cheat Sheet
 
-| ID | v4 Pattern | v5 Replacement |
-|----|-----------|----------------|
-| M1 | `onSuccess`/`onError`/`onSettled` on `useQuery` | Removed. Use `QueryCache` callbacks for global handling, component logic for UI. |
-| M2 | `keepPreviousData: true` | `placeholderData: keepPreviousData` (import from `@tanstack/react-query`) |
-| M3 | `cacheTime` | Renamed to `gcTime` |
-| M4 | `suspense: true` on query options | Use `useSuspenseQuery` / `useSuspenseInfiniteQuery` / `useSuspenseQueries` |
-| M5 | `isInitialLoading` | Use `isLoading` (now equals `isPending && isFetching`) |
-| M6 | `useQuery(key, fn, options)` positional args | Single object: `useQuery({ queryKey, queryFn, ...options })` |
-| M7 | `enabled: false` for conditional fetching | Prefer `skipToken` for type-safe disabling |
-| M8 | `loading` status | Renamed to `pending` |
-| M9 | `useQuery<TData>()` manual generics | Remove generics — type the `queryFn` return and let inference flow |
+Source: [queries](https://tanstack.com/query/v5/docs/framework/react/guides/queries).
 
-### Step 3: Generate the report
+| Flag | Meaning |
+|---|---|
+| `isPending` | No cached data yet (v4 `isLoading`) |
+| `isFetching` | A fetch is in flight (background or foreground) |
+| `isLoading` | `isPending && isFetching` — first load in progress (v4 `isInitialLoading`) |
+| `isSuccess` | Resolved; `data` is defined |
+| `isError` | Rejected; `error` is defined |
+| `isPlaceholderData` | Rendering placeholder / kept-previous data |
 
-Produce a structured report in this exact format:
+## Quick Anti-Pattern Scan
 
-```markdown
-## TanStack Query Review Report
+When reading or writing code, these should pattern-match instantly:
 
-### Summary
-- **Critical**: X issues
-- **Warnings**: Y issues
-- **Migration**: Z items
-- **Assessment**: [one-sentence overall assessment]
+- `useState(data)` or `useEffect(() => setX(data), [data])` → copying server state to client state. Delete the local state.
+- `const { data, ...rest } = useQuery(...)` → the spread defeats tracked-query re-render optimization.
+- `fetch(url).then(r => r.json())` with no `r.ok` check → HTTP errors cached as success.
+- `cacheTime:` anywhere → v4 leftover, rename to `gcTime`.
+- `onSuccess` / `onError` / `onSettled` inside a `useQuery({...})` config → v4 leftover, these are removed in v5 for queries.
+- `suspense: true` on a query → use `useSuspenseQuery`.
+- `keepPreviousData: true` → rename to `placeholderData: keepPreviousData`.
+- `useInfiniteQuery({...})` with no `initialPageParam` → will throw in v5.
+- Multiple `useSuspenseQuery` calls in one component → serial waterfall, use `useSuspenseQueries`.
+- `setQueryData` updater mutating `old` in place → breaks structural sharing.
+- `invalidateQueries` inside a mutation `onSuccess` without `return` → UI flashes stale before refetch.
+- Shared `QueryClient` across tests → state leakage, order-dependent failures.
 
-### Critical Issues
+## Reference Index
 
-#### [C1] Server state copied to client state
-**File:** `src/components/TodoList.tsx:14`
-**Issue:** Query data copied to useState via useEffect, creating stale copy that misses background updates.
-**Fix:**
-[before/after code block showing the fix]
+Every reference below cites the v5 docs at the top. Fetch the doc URLs when you need verification.
 
-### Warnings
-[Same format — ID, file, issue, fix]
+- **`references/review-checklist.md`** — audit tables (C1–C6, W1–W14, M1–M12) and the report format
+- **`references/coding-standards.md`** — full opinionated rules for writing new v5 code
+- **`references/v5-migration.md`** — complete v4→v5 change list and the official codemod
+- **`references/setup.md`** — `QueryClient` configuration, `QueryCache.onError`, feature-based colocation, query key rules, `queryOptions`
+- **`references/query-patterns.md`** — `select`, `skipToken`, dependent queries, paginated, infinite, prefetching, Suspense, error boundaries, status flags, cache timing, TypeScript tips
+- **`references/mutations.md`** — basic mutations, callback separation, optimistic updates via `variables`, optimistic updates via cache manipulation with rollback
+- **`references/auth.md`** — token refresh at the HTTP layer, `skipToken`/`enabled` gating, `queryClient.clear()` on logout, retry policy for 401s
+- **`references/testing.md`** — per-test `QueryClient`, MSW handlers, success/error-path test shapes, cache pre-seeding
 
-### v4 to v5 Migration Opportunities
-[Same format — ID, file, v4 pattern found, v5 replacement with code]
+## Grounding Principle
 
-### Recommendations
-[Prioritized list of suggested improvements, starting with highest-impact changes]
-```
-
-Group findings by severity. Within each group, order by impact. Include file paths with line numbers and concrete before/after code fixes for every finding.
-
----
-
-## Coding Standards
-
-When writing new TanStack Query code, follow these rules strictly.
-
-### QueryClient Setup
-
-- Set a global `staleTime` above zero (60 seconds is a sensible default for most apps)
-- Ensure `gcTime >= staleTime` always
-- Use `QueryCache` `onError` for global error handling — never per-component `useEffect` error toasts
-- Create `QueryClient` outside the component tree for a stable reference
-- Include `<ReactQueryDevtools>` in development
-
-### Query Key Factories with queryOptions
-
-All query definitions go through `queryOptions` factories. Never use inline query key arrays.
-
-```typescript
-import { queryOptions } from '@tanstack/react-query'
-
-export const todoQueries = {
-  all: () => ['todos'] as const,
-
-  lists: () =>
-    queryOptions({
-      queryKey: [...todoQueries.all(), 'list'] as const,
-      queryFn: fetchAllTodos,
-    }),
-
-  list: (filters: TodoFilters) =>
-    queryOptions({
-      queryKey: [...todoQueries.all(), 'list', { filters }] as const,
-      queryFn: () => fetchTodos(filters),
-    }),
-
-  detail: (id: number) =>
-    queryOptions({
-      queryKey: [...todoQueries.all(), 'detail', id] as const,
-      queryFn: () => fetchTodoById(id),
-    }),
-}
-```
-
-Structure keys from most generic to most specific. Use `as const` for type-safe keys.
-
-### File Organization
-
-```
-src/features/{feature}/
-  queries.ts       // queryOptions factories + fetch functions
-  mutations.ts     // useMutation hooks (custom hooks ARE appropriate for mutations)
-  components/
-    FeatureList.tsx
-    FeatureDetail.tsx
-```
-
-### Data Fetching
-
-- **Always check `response.ok`** when using the fetch API as a `queryFn`. Throw explicitly on 4xx/5xx.
-- Use `skipToken` for conditional fetching (type-safe disabling). Use `enabled: false` only when you need manual `refetch()`.
-- Use `select` for all data transformations. Keep selectors as stable references (module-level functions or `useCallback`).
-- Use `placeholderData: (prev) => prev` to keep previous data during key changes (pagination, filtering).
-- Never copy query data into `useState`. Derive everything from `data` directly.
-
-### Mutations
-
-- **Callback separation**: shared logic (invalidation, cache updates) in `useMutation` definition, UI logic (navigation, toasts, form resets) in `mutate()` call-site callbacks.
-- **Return the invalidation promise** from `onSuccess` to keep the mutation pending until fresh data arrives.
-- **Invalidate in `onSettled`** (not `onSuccess`) when using optimistic updates, so the cache corrects on both success and error.
-- Never mutate cached data in-place in `setQueryData` updaters. Always return new references.
-- Reserve optimistic updates for high-confidence, instant-feedback interactions (toggles, likes). Avoid for form submissions that navigate away.
-
-### Suspense & React 19
-
-- Use `useSuspenseQuery` (not `suspense: true`) — `data` is guaranteed defined.
-- Always pair `<Suspense>` with `<ErrorBoundary>` (use `QueryErrorResetBoundary` + `react-error-boundary`).
-- Never use multiple `useSuspenseQuery` calls in the same component — use `useSuspenseQueries` for parallel fetches.
-- Prefetch in route loaders to avoid waterfalls. Use `ensureQueryData` for critical (blocking) data, `prefetchQuery` for non-critical.
-- Use `startTransition` when query keys change (pagination) to keep old UI visible instead of showing the Suspense fallback.
-
-### Infinite Queries
-
-- Always provide `initialPageParam` (required in v5).
-- Return `undefined` from `getNextPageParam` to signal no more pages.
-- Use `maxPages` to limit stored pages for memory management.
-- Combine with `IntersectionObserver` for infinite scroll.
-
-### TypeScript
-
-- **Type fetch functions, not hooks.** Never provide manual generics to `useQuery<T>()`. Let inference flow from the `queryFn` return type.
-- Register a global error type via module augmentation (`Register` interface).
-- Use `as const` on all query key arrays for literal type inference.
-
-### Testing
-
-- Create a fresh `QueryClient` per test with `retry: false` and `gcTime: Infinity`.
-- Use MSW (Mock Service Worker) over mocking `fetch` directly.
-- Pre-seed cache with `queryClient.setQueryData` for tests needing immediate data.
-- Never share a `QueryClient` between tests.
-
----
-
-## Quick Reference: v5 Status Flags
-
-| v4 | v5 | Meaning |
-|----|-----|---------|
-| `isLoading` | `isPending` | No cached data yet |
-| `isInitialLoading` | `isLoading` | `isPending && isFetching` |
-| — | `isPlaceholderData` | Showing placeholder, real fetch in progress |
-
-## Deep Dive
-
-For the complete TanStack Query v5 reference covering all configuration options, detailed pattern explanations, performance optimization strategies, and the full list of v5 breaking changes, read [references/tanstack-query-v5-guide.md](references/tanstack-query-v5-guide.md).
+Every recommendation in this skill maps to a v5 doc section. If a user request leads you into territory not covered by the cited docs (e.g., a third-party HTTP client's auth integration), call it out explicitly and verify against that tool's own documentation before recommending a pattern. When the v5 docs change between minor versions, the docs win — flag the discrepancy and offer to update this skill.
