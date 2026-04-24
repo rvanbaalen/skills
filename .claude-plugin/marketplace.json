@@ -21,6 +21,12 @@
       "version": "1.1.0"
     },
     {
+      "name": "make-issue-comment",
+      "source": "./plugins/make-issue-comment",
+      "description": "Post a structured investigation/fix comment on the active GitHub PR, update progress, and mark resolved when done",
+      "version": "0.1.0"
+    },
+    {
       "name": "version-bump",
       "source": "./plugins/version-bump",
       "description": "Auto-suggest semver version bumps for changed plugins before pushing",

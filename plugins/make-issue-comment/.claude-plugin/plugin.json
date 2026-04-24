@@ -1,0 +1,7 @@
+{
+  "name": "make-issue-comment",
+  "description": "Post a structured investigation/fix comment on the active GitHub PR and update or resolve it later",
+  "author": {
+    "name": "Robin van Baalen"
+  }
+}
