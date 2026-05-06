@@ -3,3 +3,6 @@
 *.swo
 node_modules/
 .idea/
+
+# skill-creator eval workspaces — sibling to a plugin dir, not a plugin themselves
+plugins/*-workspace/
