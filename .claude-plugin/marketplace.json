@@ -109,6 +109,12 @@
       "source": "./plugins/drill-me",
       "description": "Stress-test a plan before implementation by walking the design tree one decision at a time, with a recommended answer for every question",
       "version": "0.1.0"
+    },
+    {
+      "name": "comment-conventions",
+      "source": "./plugins/comment-conventions",
+      "description": "Language-agnostic code commenting and docblock conventions — present-tense comments, dev-focused content, mandatory docblocks on new functions/methods/components, and a descending-sentence-length rule for docblock prose. Detects non-compliant docblocks on existing functions and offers to update them.",
+      "version": "0.1.0"
     }
   ]
 }

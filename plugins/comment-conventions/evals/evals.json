@@ -1,0 +1,26 @@
+{
+  "skill_name": "comment-conventions",
+  "evals": [
+    {
+      "id": 1,
+      "name": "new-function",
+      "prompt": "Write a TypeScript utility function `formatBytes(bytes: number, decimals?: number): string` that converts a byte count into a human-readable string like '1.5 MB' or '512 KB'. Save it to format.ts. Include any documentation you'd normally include for a new utility.",
+      "expected_output": "A format.ts file with the function and a docblock that follows the conventions: present-tense, dev-focused, ≤3-sentence prose with descending sentence lengths, plus @param/@returns and ideally an @example.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "name": "clean-history-comments",
+      "prompt": "I'm cleaning up this file. Rewrite the comments so they describe what the code does now, not the implementation history. Keep any comment that adds genuine explanatory value (e.g., references to issues, tickets, or RFCs). Save the cleaned-up version as cache.ts.",
+      "expected_output": "cache.ts where history-narrating comments are removed or rewritten to describe current behavior; references to issues/RFCs preserved; remaining comments target developers and explain code.",
+      "files": ["inputs/cache.ts"]
+    },
+    {
+      "id": 3,
+      "name": "react-component",
+      "prompt": "Build a React `PriceTag` component (TypeScript) that displays a formatted price with optional currency selection and an optional 'sale' strikethrough state. Save it to PriceTag.tsx. Include the documentation you'd normally include for a new component.",
+      "expected_output": "PriceTag.tsx with a TSDoc/JSDoc-style docblock describing the component, listing props, with prose ≤3 sentences in descending length, ideally with a usage example.",
+      "files": []
+    }
+  ]
+}

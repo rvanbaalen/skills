@@ -1,0 +1,7 @@
+{
+  "name": "comment-conventions",
+  "description": "Language-agnostic code commenting and docblock conventions — present-tense comments, dev-focused content, mandatory docblocks on new functions/methods/components, and a descending-sentence-length rule for docblock prose. Detects non-compliant docblocks on existing functions and offers to update them.",
+  "author": {
+    "name": "Robin van Baalen"
+  }
+}
