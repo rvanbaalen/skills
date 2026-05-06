@@ -59,14 +59,16 @@ author="$(git config user.name)"
 email="$(git config user.email)"
 for wt in $(git worktree list --porcelain | awk '/^worktree /{print $2}'); do
   echo "=== $wt ==="
-  git -C "$wt" log --all --author="$author" --since="<start>" --until="<end>" --oneline --no-merges
-  # Also pick up commits where the user is the GitHub-recorded author by email,
-  # in case user.name varies across machines:
-  git -C "$wt" log --all --author="$email" --since="<start>" --until="<end>" --oneline --no-merges
+  # Multiple --author flags OR together, catching commits where user.name
+  # varies across machines but the email is consistent:
+  git -C "$wt" log --all \
+    --author="$author" --author="$email" \
+    --since="<start>" --until="<end>" \
+    --oneline --no-merges
 done
 ```
 
-Dedupe by commit SHA across iterations — `--all` returns overlapping sets across worktrees that share refs. Keep the SHA → first-seen worktree mapping for attribution context.
+Dedupe by commit SHA across worktree iterations — `--all` returns overlapping sets across worktrees that share refs. A simple `awk '!seen[$1]++'` over the concatenated output works, or build a SHA → first-seen worktree map for attribution context.
 
 If every worktree returns empty, fall through to step 4 — merged PRs may still surface activity (e.g., squash-merged work where the original branch was pruned).
 
@@ -76,10 +78,10 @@ Squash-merge workflows replace branch commits with a single new SHA on the defau
 
 Skip this step silently if `gh` isn't installed (`command -v gh`) or the repo isn't on GitHub (`gh repo view --json url 2>/dev/null` fails).
 
-Otherwise, list PRs authored by the user merged within the same window:
+Otherwise, list PRs authored by the user merged within the same window — the `merged:` search qualifiers already imply state=merged, so no `--state` flag is needed:
 
 ```bash
-gh pr list --author "@me" --state merged \
+gh pr list --author "@me" \
   --search "merged:>=<start-date> merged:<=<end-date>" \
   --json number,title,mergedAt,headRefName,url \
   --limit 50
