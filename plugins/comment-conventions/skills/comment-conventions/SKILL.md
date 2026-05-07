@@ -137,6 +137,32 @@ This rule applies only to the prose description. Parameter listings (`@param`, `
 
 A one-sentence or two-sentence docblock is fine — descending length only matters when a sentence follows another.
 
+### Sentences, not lines
+
+The rule measures sentences, not comment lines. A single sentence can wrap across multiple lines — pack each line as full as the surrounding line-length convention allows. What matters is that sentence *N+1* is shorter than sentence *N*, regardless of how the prose breaks visually.
+
+**Acceptable** — one sentence per line, but wastes the right-hand whitespace:
+
+```js
+/*
+ * Self-contained date picker for react-hook-form: read-only Input with calendar icon that opens a `DateTimePickerModal`.
+ * Reads/writes the field via `useFormContext` and handles employer-timezone shifting.
+ * Owns its own open/closed state.
+ */
+```
+
+**Best** — sentences wrap to fill the line width; descending length still holds:
+
+```js
+/*
+ * Self-contained date picker for react-hook-form: read-only Input with calendar icon
+ * that opens a `DateTimePickerModal`. Reads/writes the field via `useFormContext`
+ * and handles employer-timezone shifting. Owns its own open/closed state.
+ */
+```
+
+Both are compliant. The second is preferred because it uses the available width — it's the same prose, just wrapped naturally.
+
 ## Rule 5 — When you encounter a non-compliant existing function, ask before updating
 
 When reading or modifying code, scan for functions/methods/components that either lack a docblock entirely or have one that violates the rules above. Common offenders to flag:
