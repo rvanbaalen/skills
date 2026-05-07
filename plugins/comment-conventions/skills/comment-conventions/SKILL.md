@@ -70,9 +70,37 @@ Every new function, method, class, or component is introduced with a docblock ab
 
 The bar, in increasing order of value:
 
-- **Minimum** — list parameters / props / fields and the return value (or thrown errors), so the signature reads at a glance.
-- **Better** — add a one-line description of the purpose.
+- **Minimum** — a one-line prose description of *what the function does and why it exists*, plus the parameters / props / fields and the return value (or thrown errors).
+- **Better** — extend the description with a second (shorter) sentence that adds context the name doesn't carry, e.g. invariants, pairing with another function, or non-obvious behaviour.
 - **Bonus** — include a short usage example.
+
+A docblock that contains only tag annotations (`@param`, `@returns`, `:param:`, `Args:`, `Returns:`, etc.) with no prose description is **non-compliant**. The tags restate the signature; the description carries the meaning. Without it the docblock is noise around information the reader can already see in the function header.
+
+**Wrong** — tag-only docblock, no prose description:
+
+```js
+/**
+ * @param {function} t - i18next translate function
+ * @param {() => void} onPress - callback when the action button is pressed
+ * @returns {{ icon: string, label: string, color: string, ... }} SwipeableRow action descriptor
+ */
+export function makeDeleteAction(t, onPress) { ... }
+```
+
+**Right** — prose description first, then tags:
+
+```js
+/**
+ * Builds the delete-action descriptor for a SwipeableRow with shared red styling.
+ * Centralises colours and icon across every swipe-to-delete row.
+ * Pairs with `makeEditAction`.
+ *
+ * @param {function} t - i18next translate function
+ * @param {() => void} onPress - callback when the action button is pressed
+ * @returns {{ icon: string, label: string, color: string, ... }} SwipeableRow action descriptor
+ */
+export function makeDeleteAction(t, onPress) { ... }
+```
 
 A "component" here means whatever the language calls its UI unit: a React component, a Vue SFC, a Svelte component, a Web Component, an Angular component, etc. The same rule applies — document props, briefly describe purpose, optionally show a usage snippet.
 
@@ -111,7 +139,14 @@ A one-sentence or two-sentence docblock is fine — descending length only matte
 
 ## Rule 5 — When you encounter a non-compliant existing function, ask before updating
 
-When reading or modifying code, scan for functions/methods/components that either lack a docblock entirely or have one that violates the rules above (e.g., flat sentence lengths, history-narrating prose, marketing copy). Don't silently rewrite them — flag and ask.
+When reading or modifying code, scan for functions/methods/components that either lack a docblock entirely or have one that violates the rules above. Common offenders to flag:
+
+- No docblock at all on a function/method/component.
+- Docblock with only tag annotations (`@param`, `@returns`, etc.) and no prose description — see Rule 3.
+- Prose that narrates implementation history (Rule 1) or restates the function name / markets the feature (Rule 2).
+- Prose with flat or ascending sentence lengths, or more than 3 sentences (Rule 4).
+
+Don't silently rewrite them — flag and ask.
 
 Use the `AskUserQuestion` tool with one question per offender (or grouped if there are many in one file). Each question's options are exactly:
 
