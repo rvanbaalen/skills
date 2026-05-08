@@ -147,7 +147,7 @@ Invoke with `/drill-me:drill-me`, or trigger naturally with phrases like "drill 
 
 ### comment-conventions
 
-Language-agnostic code commenting and docblock conventions: present-tense comments, dev-focused content, mandatory docblocks on new functions/methods/components, and a descending-sentence-length rule for docblock prose. Detects non-compliant docblocks on existing functions and offers to update them.
+Language-agnostic code commenting and docblock conventions: present-tense comments, dev-focused content, mandatory docblocks on new functions/methods/components, and a 3-source-line descending-length cap on docblock prose. Auto-fixes non-compliant docblocks on existing functions in the file being edited, leaving unusually long deliberate ones alone.
 
 ```
 /plugin install comment-conventions@rvanbaalen
