@@ -149,7 +149,7 @@ This forces precision and caps the visual footprint: a docblock should be skim-a
  */
 ```
 
-Pack each line as full as the surrounding line-length convention allows — a sentence can finish mid-line and the next one can start on the same line, as long as the visible source lines stay within the 3-line cap and shrink monotonically. If you can't say it in 3 lines that taper, cut content; don't wrap a long sentence over multiple lines to look compliant.
+Pack each line as full as the surrounding line-length convention allows — a sentence can finish mid-line and the next one can start on the same line, as long as the visible source lines stay within the 3-line cap and each line is shorter than the previous. If you can't say it in 3 lines that taper, cut content; don't wrap a long sentence over multiple lines to look compliant.
 
 A one-line or two-line docblock prose block is fine — descending length only matters when a line follows another.
 
