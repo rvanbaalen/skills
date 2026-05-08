@@ -113,8 +113,8 @@
     {
       "name": "comment-conventions",
       "source": "./plugins/comment-conventions",
-      "description": "Language-agnostic code commenting and docblock conventions — present-tense comments, dev-focused content, mandatory docblocks on new functions/methods/components, and a 3-source-line descending-length cap on docblock prose. Detects non-compliant docblocks on existing functions and offers to update them.",
-      "version": "0.4.0"
+      "description": "Language-agnostic code commenting and docblock conventions — present-tense comments, dev-focused content, mandatory docblocks on new functions/methods/components, and a 3-source-line descending-length cap on docblock prose. Auto-fixes non-compliant docblocks on existing functions in the file being edited, leaving unusually long deliberate ones alone.",
+      "version": "0.6.0"
     }
   ]
 }

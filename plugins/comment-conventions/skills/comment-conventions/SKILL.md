@@ -1,6 +1,6 @@
 ---
 name: comment-conventions
-description: Language-agnostic code commenting and docblock conventions. Apply whenever writing or editing code comments, JSDoc/TSDoc/PHPDoc/Python docstrings/Rustdoc/GoDoc/KDoc/etc., or adding any new function, method, class, or component. Also apply when reading or modifying existing code that contains functions/methods without a compliant docblock — surface them and ask the user whether to update. Trigger even when the user does not explicitly mention comments or docblocks; these rules apply to all code authoring across all languages.
+description: Language-agnostic code commenting and docblock conventions. Trigger on every source-code Edit/Write in any language (JS/TS, Python, PHP, Ruby, Go, Rust, Java, Kotlin, Swift, C/C++, C#, Elixir, Lua, Shell, etc.) — even when the user has not mentioned comments, docblocks, JSDoc/TSDoc/PHPDoc, docstrings, or documentation. Governs every comment authored or modified, every new function/method/class/component (which must get a compliant docblock), and any non-compliant docblock encountered in the file being edited (which must be fixed in place — no need to ask first, except when the existing docblock is unusually long and clearly intentional, in which case leave it alone). Apply to all code authoring across all languages, every time source code is touched. When in doubt whether this skill applies to a code edit, invoke it. Skip only for non-code files (JSON/YAML/TOML configs, markdown, lockfiles) or trivial one-character edits.
 ---
 
 # Comment Conventions
@@ -153,47 +153,20 @@ Pack each line as full as the surrounding line-length convention allows — a se
 
 A one-line or two-line docblock prose block is fine — descending length only matters when a line follows another.
 
-## Rule 5 — When you encounter a non-compliant existing function, ask before updating
+## Rule 5 — When you encounter a non-compliant existing function, fix it in place
 
-When reading or modifying code, scan for functions/methods/components that either lack a docblock entirely or have one that violates the rules above. Common offenders to flag:
+When reading or modifying code, scan for functions/methods/components that either lack a docblock entirely or have one that violates the rules above, and fix them directly. Don't ask first. Common offenders to fix:
 
 - No docblock at all on a function/method/component.
 - Docblock with only tag annotations (`@param`, `@returns`, etc.) and no prose description — see Rule 3.
 - Prose that narrates implementation history (Rule 1) or restates the function name / markets the feature (Rule 2).
 - Docblock prose with flat or ascending line lengths, or more than 3 lines (Rule 4).
 
-Don't silently rewrite them — flag and ask.
+Apply this detection *only to functions/methods/components inside the file or region you are currently working on*. Don't grep the entire repo and rewrite a wall of docblocks — that's noise. The point is to catch the ones a developer would naturally see while doing the current task.
 
-Use the `AskUserQuestion` tool with one question per offender (or grouped if there are many in one file). Each question's options are exactly:
+**Exception — leave intentionally long docblocks alone.** If a non-compliant docblock is unusually long and reads as deliberately written (multi-paragraph prose, dedicated sections like "Edge cases" / "Notes" / "Caveats", multiple `@example` blocks, or detailed narrative that clearly took effort), don't chop it down to fit Rule 4. Excessive description is a signal the author cared about that block — leave it untouched. The 3-line cap is a default for ordinary docblocks, not a hammer for existing thoughtful ones.
 
-- `Update docblock` — apply the conventions to that function/method/component.
-- `Skip` — leave it as-is and move on.
-
-Apply this detection *only to functions/methods/components inside the file or region you are currently working on*. Don't grep the entire repo and surface a wall of questions — that's noise. The point is to catch the ones a developer would naturally see while doing the current task.
-
-If there are many offenders in the working file (say, more than ~5), batch them into a single question with `multiSelect: true` so the user can tick all the ones to update in one pass. The header should be the file name.
-
-**Example invocation pattern:**
-
-```
-AskUserQuestion({
-  questions: [
-    {
-      question: "Update docblock on `calculateTotal` (src/pricing.ts)?",
-      header: "calculateTotal",
-      multiSelect: false,
-      options: [
-        { label: "Update docblock", description: "Add/rewrite to follow comment-conventions rules" },
-        { label: "Skip", description: "Leave as-is" }
-      ]
-    }
-  ]
-})
-```
-
-If the user picks `Update docblock`, apply rules 1–4. If they pick `Skip`, move on without complaint and don't ask about that function again in the same session.
-
-Don't ask about a function the user has explicitly told you to leave alone, and don't ask about generated code, vendored dependencies, or third-party files.
+Don't touch generated code, vendored dependencies, or third-party files. Don't touch a function the user has explicitly told you to leave alone.
 
 ## Putting it together
 
