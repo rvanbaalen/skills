@@ -106,13 +106,15 @@ A "component" here means whatever the language calls its UI unit: a React compon
 
 This rule fires only on *new* functions/methods/components you are introducing in the current change. Don't retroactively docblock an entire untouched file just because you opened it. (The detection rule below covers the case where you do encounter a non-compliant existing function.)
 
-## Rule 4 — Docblock prose: at most 3 sentences, each shorter than the last
+## Rule 4 — Docblock prose: at most 3 lines, each shorter than the last
 
-The prose description inside a docblock has at most 3 sentences. Each sentence is strictly shorter than the one before it (measured in words or characters — close calls are fine, but the trend has to be downward).
+The prose description inside a docblock has at most 3 source lines of text. Each line is strictly shorter than the one before it (measured in characters — close calls are fine, but the trend has to be downward).
 
-This forces precision: the first sentence carries the weight, each follow-up trims rather than adds. It also mirrors how docblocks are actually read — the eye lands on line one, and bails as soon as it has enough.
+**This rule applies only to the prose description block inside a docblock.** It does not apply to inline comments (`//`, `#`, `--`), to standalone block comments outside docblocks, or to the structured tag section of a docblock (`@param`, `@returns`, `:param:`, `Args:`, `Returns:`, `@example`, etc.). Tags are not part of the line count and are not subject to descending length.
 
-**Wrong** — flat or growing sentence lengths:
+This forces precision and caps the visual footprint: a docblock should be skim-able at a glance, not a 6-line wall. The first line carries the weight; each follow-up trims rather than adds.
+
+**Wrong** — more than 3 lines of prose, or flat / ascending line lengths:
 
 ```js
 /**
@@ -120,10 +122,24 @@ This forces precision: the first sentence carries the weight, each follow-up tri
  * Handles currency conversion as needed.
  * It also supports localization for different regions and accepts an optional
  * configuration object that lets the caller override defaults.
+ * Falls back to USD when no currency is configured.
  */
 ```
 
-**Right** — descending lengths, each sentence shorter than the last:
+**Wrong** — only 3 sentences, but they wrap into 6+ lines of prose:
+
+```js
+/**
+ * Self-contained date picker for react-hook-form: read-only Input with a calendar
+ * icon that opens a `DateTimePickerModal` when tapped, with full keyboard support
+ * and accessibility labels.
+ * Reads and writes the field via `useFormContext`, handles employer-timezone shifting,
+ * and clamps the selected date to the configured min/max range.
+ * Owns its own open/closed state and exposes an imperative ref for parent control.
+ */
+```
+
+**Right** — at most 3 lines, each line shorter than the previous:
 
 ```js
 /**
@@ -133,35 +149,9 @@ This forces precision: the first sentence carries the weight, each follow-up tri
  */
 ```
 
-This rule applies only to the prose description. Parameter listings (`@param`, `:param:`, `Args:`, etc.), return-type descriptions, and `@example` blocks are not part of the sentence count and are not subject to descending length.
+Pack each line as full as the surrounding line-length convention allows — a sentence can finish mid-line and the next one can start on the same line, as long as the visible source lines stay within the 3-line cap and shrink monotonically. If you can't say it in 3 lines that taper, cut content; don't wrap a long sentence over multiple lines to look compliant.
 
-A one-sentence or two-sentence docblock is fine — descending length only matters when a sentence follows another.
-
-### Sentences, not lines
-
-The rule measures sentences, not comment lines. A single sentence can wrap across multiple lines — pack each line as full as the surrounding line-length convention allows. What matters is that sentence *N+1* is shorter than sentence *N*, regardless of how the prose breaks visually.
-
-**Acceptable** — one sentence per line, but wastes the right-hand whitespace:
-
-```js
-/*
- * Self-contained date picker for react-hook-form: read-only Input with calendar icon that opens a `DateTimePickerModal`.
- * Reads/writes the field via `useFormContext` and handles employer-timezone shifting.
- * Owns its own open/closed state.
- */
-```
-
-**Best** — sentences wrap to fill the line width; descending length still holds:
-
-```js
-/*
- * Self-contained date picker for react-hook-form: read-only Input with calendar icon
- * that opens a `DateTimePickerModal`. Reads/writes the field via `useFormContext`
- * and handles employer-timezone shifting. Owns its own open/closed state.
- */
-```
-
-Both are compliant. The second is preferred because it uses the available width — it's the same prose, just wrapped naturally.
+A one-line or two-line docblock prose block is fine — descending length only matters when a line follows another.
 
 ## Rule 5 — When you encounter a non-compliant existing function, ask before updating
 
@@ -170,7 +160,7 @@ When reading or modifying code, scan for functions/methods/components that eithe
 - No docblock at all on a function/method/component.
 - Docblock with only tag annotations (`@param`, `@returns`, etc.) and no prose description — see Rule 3.
 - Prose that narrates implementation history (Rule 1) or restates the function name / markets the feature (Rule 2).
-- Prose with flat or ascending sentence lengths, or more than 3 sentences (Rule 4).
+- Docblock prose with flat or ascending line lengths, or more than 3 lines (Rule 4).
 
 Don't silently rewrite them — flag and ask.
 
@@ -239,4 +229,4 @@ function priceFor(item: Item, qty: number): number {
 }
 ```
 
-Note: the historical narrative is gone, the docblock prose is three sentences with descending length, and `@param` / `@returns` / `@example` carry the structural detail outside the sentence-count rule.
+Note: the historical narrative is gone, the docblock prose is three lines with descending length, and `@param` / `@returns` / `@example` carry the structural detail outside the line-count rule.
