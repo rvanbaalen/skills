@@ -1,6 +1,6 @@
 ---
 name: comment-conventions
-description: Language-agnostic code commenting and docblock conventions. Trigger on every source-code Edit/Write in any language (JS/TS, Python, PHP, Ruby, Go, Rust, Java, Kotlin, Swift, C/C++, C#, Elixir, Lua, Shell, etc.) — even when the user has not mentioned comments, docblocks, JSDoc/TSDoc/PHPDoc, docstrings, or documentation. Governs every comment authored or modified, every new function/method/class/component (which must get a compliant docblock), and any non-compliant docblock encountered in the file being edited (which must be fixed in place — no need to ask first, except when the existing docblock is unusually long and clearly intentional, in which case leave it alone). Apply to all code authoring across all languages, every time source code is touched. When in doubt whether this skill applies to a code edit, invoke it. Skip only for non-code files (JSON/YAML/TOML configs, markdown, lockfiles) or trivial one-character edits.
+description: Language-agnostic code commenting and docblock conventions. Trigger on every source-code Edit/Write in any language (JS/TS, Python, PHP, Ruby, Go, Rust, Java, Kotlin, Swift, C/C++, C#, Elixir, Lua, Shell, etc.) — even when the user has not mentioned comments, docblocks, JSDoc/TSDoc/PHPDoc, docstrings, or documentation. Governs every comment authored or modified, every new function/method/class/component (which must get a compliant docblock), every inline comment (which must stay terse — no prose walls, no business-logic essays, no "step 1 / step 2" narration in the code path), and any non-compliant docblock encountered in the file being edited (which must be fixed in place — no need to ask first, except when the existing docblock is unusually long and clearly intentional, in which case leave it alone). Apply to all code authoring across all languages, every time source code is touched. When in doubt whether this skill applies to a code edit, invoke it. Skip only for non-code files (JSON/YAML/TOML configs, markdown, lockfiles) or trivial one-character edits.
 ---
 
 # Comment Conventions
@@ -153,7 +153,65 @@ Pack each line as full as the surrounding line-length convention allows — a se
 
 A one-line or two-line docblock prose block is fine — descending length only matters when a line follows another.
 
-## Rule 5 — When you encounter a non-compliant existing function, fix it in place
+## Rule 5 — Inline comments stay terse; no prose walls in the code path
+
+The default for an inline comment (`//`, `#`, `--`, single-line `/* ... */`) is **none**. Write one only when the *why* of the next line or two is non-obvious — a hidden constraint, a subtle invariant, a workaround for a specific bug, behaviour that would surprise a reader. If removing the comment wouldn't confuse a future reader, don't write it. Well-named identifiers already say *what* the code does; an inline comment exists to carry the *why* a reader cannot see.
+
+When you do add one, keep it tight — typically a single line, at most two. **Inline comments are not a place for business-logic essays, "how this feature works" narration, "step 1 / step 2" walkthroughs, multi-paragraph rationale, or section banners introducing the next block of code.** This is the chatter to avoid. If an explanation genuinely needs a paragraph, it belongs in the function's docblock (where Rule 4 caps it at 3 descending lines), in a referenced ticket / RFC / ADR, or in the commit message — not as a wall of `//` lines wedged into a function body.
+
+**Wrong** — prose wall narrating what the next block of code does:
+
+```ts
+// Step 1: We need to validate the input before processing it. The user may have
+// passed in undefined or an empty string, in which case we should bail out early
+// rather than continue with the rest of the function. This pattern is used
+// throughout the codebase to keep error handling consistent.
+// Step 2: Once we know the input is valid, we extract the relevant fields and
+// pass them to the downstream service. Note that the downstream service expects
+// fields in a specific order, so we have to be careful here.
+if (!input) return null;
+const { id, name } = input;
+service.send(id, name);
+```
+
+**Wrong** — narrating what well-named code already says:
+
+```js
+// Loop over each user and send them a welcome email.
+for (const user of users) {
+  sendWelcomeEmail(user);
+}
+```
+
+**Wrong** — section banner introducing a block:
+
+```ts
+// ============================================================
+// PAYMENT PROCESSING
+// This section handles the core payment flow for the checkout
+// page, including validation, charging, and receipt generation.
+// ============================================================
+function processPayment(order) { ... }
+```
+
+**Right** — single-line inline comment carrying the non-obvious *why*:
+
+```ts
+// Order matters: legacy consumer requires id before name.
+service.send(id, name);
+```
+
+**Right** — no comment at all, because the code is self-explanatory:
+
+```js
+for (const user of users) {
+  sendWelcomeEmail(user);
+}
+```
+
+The test for any inline comment is: would a reader two years from now, with no context, be *surprised* or *confused* by this line without it? If yes, write a tight comment carrying that one piece of context. If no, delete it. Business-logic context that doesn't pass this test isn't an inline-comment problem — it's a docblock, ADR, or commit-message problem, and stuffing it into the code path makes the file harder to read, not easier.
+
+## Rule 6 — When you encounter a non-compliant existing function, fix it in place
 
 When reading or modifying code, scan for functions/methods/components that either lack a docblock entirely or have one that violates the rules above, and fix them directly. Don't ask first. Common offenders to fix:
 
@@ -161,6 +219,7 @@ When reading or modifying code, scan for functions/methods/components that eithe
 - Docblock with only tag annotations (`@param`, `@returns`, etc.) and no prose description — see Rule 3.
 - Prose that narrates implementation history (Rule 1) or restates the function name / markets the feature (Rule 2).
 - Docblock prose with flat or ascending line lengths, or more than 3 lines (Rule 4).
+- Prose walls of inline comments narrating business logic, "step 1 / step 2" walkthroughs, or section banners inside a function body (Rule 5) — collapse them to the one or two lines of *why* that actually carry value, or delete them outright when the code is self-explanatory.
 
 Apply this detection *only to functions/methods/components inside the file or region you are currently working on*. Don't grep the entire repo and rewrite a wall of docblocks — that's noise. The point is to catch the ones a developer would naturally see while doing the current task.
 

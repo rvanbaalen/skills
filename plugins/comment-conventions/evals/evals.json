@@ -21,6 +21,13 @@
       "prompt": "Build a React `PriceTag` component (TypeScript) that displays a formatted price with optional currency selection and an optional 'sale' strikethrough state. Save it to PriceTag.tsx. Include the documentation you'd normally include for a new component.",
       "expected_output": "PriceTag.tsx with a TSDoc/JSDoc-style docblock describing the component, listing props, with prose ≤3 sentences in descending length, ideally with a usage example.",
       "files": []
+    },
+    {
+      "id": 4,
+      "name": "strip-inline-chatter",
+      "prompt": "Clean up the comments in this file. Keep any comment that genuinely carries non-obvious *why* context (a hidden constraint, an invariant, a referenced ADR/RFC/ticket), but collapse or remove prose walls, business-logic essays, section banners, and 'step 1 / step 2' narration that just describes what the code already plainly does. Add a compliant docblock to each function. Save the cleaned-up version as checkout.ts.",
+      "expected_output": "checkout.ts where the multi-line inline prose walls and section banner are gone, the 'step N' narration is removed, the ADR-017 reference is preserved as a tight single-line comment, well-named code stands without restating-the-obvious comments, and each function has a Rule-3/Rule-4-compliant docblock (prose description + tags, ≤3 descending lines).",
+      "files": ["inputs/checkout.ts"]
     }
   ]
 }
