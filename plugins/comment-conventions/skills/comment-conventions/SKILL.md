@@ -108,7 +108,7 @@ This rule fires only on *new* functions/methods/components you are introducing i
 
 ## Rule 4 — Docblock prose: at most 3 lines, each shorter than the last
 
-The prose description inside a docblock has at most 3 source lines of text. Each line is strictly shorter than the one before it (measured in characters — close calls are fine, but the trend has to be downward).
+The prose description inside a docblock has at most 3 source lines of text. Each line is strictly shorter than the one before it, measured in characters. No "close enough" and no "the trend is downward overall" — if any line is the same length as or longer than the line above it, the rule is violated and the prose must be rewritten.
 
 **This rule applies only to the prose description block inside a docblock.** It does not apply to inline comments (`//`, `#`, `--`), to standalone block comments outside docblocks, or to the structured tag section of a docblock (`@param`, `@returns`, `:param:`, `Args:`, `Returns:`, `@example`, etc.). Tags are not part of the line count and are not subject to descending length.
 
@@ -139,7 +139,7 @@ This forces precision and caps the visual footprint: a docblock should be skim-a
  */
 ```
 
-**Right** — at most 3 lines, each line shorter than the previous:
+**Wrong** — one sentence per line wastes the available column width and turns the docblock into a stack of short, ragged lines (even though each line is technically shorter than the previous):
 
 ```js
 /**
@@ -149,9 +149,27 @@ This forces precision and caps the visual footprint: a docblock should be skim-a
  */
 ```
 
-Pack each line as full as the surrounding line-length convention allows — a sentence can finish mid-line and the next one can start on the same line, as long as the visible source lines stay within the 3-line cap and each line is shorter than the previous. If you can't say it in 3 lines that taper, cut content; don't wrap a long sentence over multiple lines to look compliant.
+**Right** — write prose as continuous text and choose wrap points so each line is packed close to the surrounding column width; the taper comes from the wrap points moving slightly leftward line by line, with line 3 being whatever spills over:
+
+```js
+/**
+ * Formats a price for display, applying currency conversion and locale
+ * rules. Accepts an options object to override defaults. Falls back
+ * to USD.
+ */
+```
+
+Sentence breaks live wherever they fall — mid-line is fine, even encouraged. The line breaks (not the sentence breaks) are what create the descending shape. If you can't say it in 3 packed lines that taper, cut content; don't sprawl over more lines and don't shrink lines 1 and 2 to make a short third line look "right."
 
 A one-line or two-line docblock prose block is fine — descending length only matters when a line follows another.
+
+**Validate before considering a docblock edit done.** Models are bad at counting characters in their own output, so do not rely on your own line-length judgment. After writing or modifying any docblock, run the validator that ships with this skill against the file you touched:
+
+```bash
+node <this-skill-dir>/scripts/validate-docblocks.mjs <file>
+```
+
+(`<this-skill-dir>` is the directory containing this `SKILL.md`.) If it flags any line, rewrite that line shorter and re-run. The edit is not complete until the script prints `OK: no docblock violations`. The validator currently parses `/** ... */` blocks (JS, TS, PHP, Java, Kotlin, Swift, C#, C/C++, Rust block form); for files in languages it does not parse (e.g. Python triple-quote docstrings, Rustdoc `///`), verify Rule 4 manually.
 
 ## Rule 5 — Inline comments stay terse; no prose walls in the code path
 
@@ -245,9 +263,8 @@ function priceFor(item, qty) {
 
 ```ts
 /**
- * Returns the line-item price for `qty` units of `item`.
- * Multiplies unit price by quantity.
- * No tax applied.
+ * Returns the line-item price for `qty` units of `item`. Multiplies unit
+ * price by quantity. No tax applied.
  *
  * @param item - The catalog item with a `unit` price.
  * @param qty - Quantity ordered.
@@ -261,4 +278,4 @@ function priceFor(item: Item, qty: number): number {
 }
 ```
 
-Note: the historical narrative is gone, the docblock prose is three lines with descending length, and `@param` / `@returns` / `@example` carry the structural detail outside the line-count rule.
+Note: the historical narrative is gone, the docblock prose is packed continuous text wrapped to two descending lines, and `@param` / `@returns` / `@example` carry the structural detail outside the line-count rule.
