@@ -139,6 +139,18 @@ This forces precision and caps the visual footprint: a docblock should be skim-a
  */
 ```
 
+**Wrong** — sentence-aligned wrapping that produces an ascending or flat line 2. This is the most common failure mode: the first sentence is short, the second runs long, and line 2 ends up *longer* than line 1 by a few characters:
+
+```js
+/**
+ * Fire-and-forget capture facade for product-adoption telemetry (Phase 1).
+ * record() validates, resolves the actor, builds an event, and never throws.
+ * Failures are logged at WARNING and swallowed.
+ */
+```
+
+(Line 1 = 72 chars, line 2 = 74 chars — line 2 must be **strictly shorter** than line 1, not roughly the same.)
+
 **Wrong** — one sentence per line wastes the available column width and turns the docblock into a stack of short, ragged lines (even though each line is technically shorter than the previous):
 
 ```js
@@ -159,17 +171,33 @@ This forces precision and caps the visual footprint: a docblock should be skim-a
  */
 ```
 
+**Right** — same content as the "ascending line 2" wrong example above, fixed by extending line 1 past the sentence break and pulling content forward:
+
+```js
+/**
+ * Fire-and-forget capture facade for product-adoption telemetry (Phase 1).
+ * record() method validates, resolves the actor, builds an event, and
+ * never throws. Failures are logged at WARNING and swallowed.
+ */
+```
+
+(Line 1 = 72, line 2 = 67, line 3 = 59 — strictly descending. The sentence ending mid-line on line 3 is fine; what matters is the line shape.)
+
 Sentence breaks live wherever they fall — mid-line is fine, even encouraged. The line breaks (not the sentence breaks) are what create the descending shape. If you can't say it in 3 packed lines that taper, cut content; don't sprawl over more lines and don't shrink lines 1 and 2 to make a short third line look "right."
 
 A one-line or two-line docblock prose block is fine — descending length only matters when a line follows another.
 
-**Validate before considering a docblock edit done.** Models are bad at counting characters in their own output, so do not rely on your own line-length judgment. After writing or modifying any docblock, run the validator that ships with this skill against the file you touched:
+**Validation runs automatically after every Edit/Write.** This plugin ships a `PostToolUse` hook (`hooks/validate-after-edit.sh`) that runs the docblock validator against any file the Edit/Write/MultiEdit tools touch in a supported language. If the validator finds a Rule 4 violation, the hook returns the offending line numbers and character counts to Claude via stderr (exit code 2), and the edit is treated as not done until the docblock is rewritten and the validator returns clean.
+
+You can also run the validator manually at any time:
 
 ```bash
 node <this-skill-dir>/scripts/validate-docblocks.mjs <file>
 ```
 
-(`<this-skill-dir>` is the directory containing this `SKILL.md`.) If it flags any line, rewrite that line shorter and re-run. The edit is not complete until the script prints `OK: no docblock violations`. The validator currently parses `/** ... */` blocks (JS, TS, PHP, Java, Kotlin, Swift, C#, C/C++, Rust block form); for files in languages it does not parse (e.g. Python triple-quote docstrings, Rustdoc `///`), verify Rule 4 manually.
+(`<this-skill-dir>` is the directory containing this `SKILL.md`.) The validator parses `/** ... */` blocks (JS, TS, PHP, Java, Kotlin, Swift, C#, C/C++, Rust block form). For files in languages it does not parse (e.g. Python triple-quote docstrings, Rustdoc `///`), the auto-hook skips them; verify Rule 4 manually for those.
+
+Do not rely on your own line-length judgment — models are bad at counting characters, and the difference between a passing and a violating docblock is often a few characters on a single line.
 
 ## Rule 5 — Inline comments stay terse; no prose walls in the code path
 

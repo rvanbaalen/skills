@@ -1,0 +1,17 @@
+{
+  "description": "Auto-validate Rule 4 (docblock prose: ≤3 lines, strictly descending) after every Edit/Write on a supported source file.",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/validate-after-edit.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}
