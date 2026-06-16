@@ -115,6 +115,12 @@
       "source": "./plugins/comment-conventions",
       "description": "Language-agnostic code commenting and docblock conventions — present-tense comments, dev-focused content, mandatory docblocks on new functions/methods/components, a 3-source-line descending-length cap on docblock prose, and a no-chatter rule for inline comments (no prose walls, no business-logic essays, no step-by-step narration in the code path). Auto-fixes non-compliant docblocks and inline-comment walls on existing functions in the file being edited, leaving unusually long deliberate docblocks alone. Ships a PostToolUse hook that auto-validates Rule 4 on every Edit/Write.",
       "version": "0.8.0"
+    },
+    {
+      "name": "design-principles",
+      "source": "./plugins/design-principles",
+      "description": "Apple's eight core principles of design (Purpose, Agency, Responsibility, Familiarity, Flexibility, Simplicity, Craft, Delight) as a working framework for reviewing, critiquing, and building user interfaces — applied with the canonical examples and with trade-offs surfaced whenever honoring one principle costs another",
+      "version": "0.1.0"
     }
   ]
 }

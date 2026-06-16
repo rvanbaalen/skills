@@ -1,0 +1,7 @@
+{
+  "name": "design-principles",
+  "description": "Apple's eight core principles of design (Purpose, Agency, Responsibility, Familiarity, Flexibility, Simplicity, Craft, Delight) as a working framework for reviewing, critiquing, and building user interfaces — surfacing the trade-offs whenever honoring one principle costs another",
+  "author": {
+    "name": "Robin van Baalen"
+  }
+}
