@@ -87,6 +87,12 @@
       "version": "1.2.0"
     },
     {
+      "name": "hermes-tweet",
+      "source": "./plugins/hermes-tweet",
+      "description": "Use Hermes Tweet when a Hermes Agent workflow needs X/Twitter search, reads, monitoring, or approval-gated account actions through Xquik",
+      "version": "0.1.6"
+    },
+    {
       "name": "cpr",
       "source": "./plugins/cpr",
       "description": "Commit, Push, and Release — one-command workflow with release-please integration",
