@@ -34,6 +34,7 @@ Then install any plugin below with `/plugin install <name>@rvanbaalen`.
 - [Specialized tools](#specialized-tools)
   - [ocr-document-processor](#ocr-document-processor)
   - [use-agentvision](#use-agentvision)
+  - [hermes-tweet](#hermes-tweet)
   - [cloudflare-deploy](#cloudflare-deploy)
 
 ---
@@ -246,6 +247,16 @@ See and interact with the user's real screen via the `agent-vision` CLI: screens
 ```
 
 Auto-triggers on phrases like "look at my screen", "the app is open", or "fill this form" when an app is already running.
+
+### hermes-tweet
+
+Hermes Agent X/Twitter plugin guidance for Xquik workflows. Use it to install and operate Hermes Tweet with read-first endpoint discovery, `tweet_read` for safe reads, and `tweet_action` only after explicit approval.
+
+```
+/plugin install hermes-tweet@rvanbaalen
+```
+
+Invoke with `/hermes-tweet:hermes-tweet`.
 
 ### cloudflare-deploy
 

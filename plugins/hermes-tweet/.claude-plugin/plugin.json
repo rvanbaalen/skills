@@ -1,0 +1,7 @@
+{
+  "name": "hermes-tweet",
+  "description": "Use Hermes Tweet when a Hermes Agent workflow needs X/Twitter search, reads, monitoring, or approval-gated account actions through Xquik.",
+  "author": {
+    "name": "Xquik"
+  }
+}
