@@ -121,6 +121,12 @@
       "source": "./plugins/design-principles",
       "description": "Apple's eight core principles of design (Purpose, Agency, Responsibility, Familiarity, Flexibility, Simplicity, Craft, Delight) as a working framework for reviewing, critiquing, and building user interfaces — applied with the canonical examples and with trade-offs surfaced whenever honoring one principle costs another",
       "version": "0.1.0"
+    },
+    {
+      "name": "disk-cleanup",
+      "source": "./plugins/disk-cleanup",
+      "description": "Multi-step macOS disk-space cleanup: identify what's using disk, propose a safety-tiered plan, then execute with confirmation. Covers caches, dev tooling, VMs, Ollama models, orphaned app data, app uninstalls, and the Time Machine local-snapshot trap",
+      "version": "0.1.0"
     }
   ]
 }

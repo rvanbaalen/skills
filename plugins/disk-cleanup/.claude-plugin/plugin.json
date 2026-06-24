@@ -1,0 +1,7 @@
+{
+  "name": "disk-cleanup",
+  "description": "Multi-step macOS disk space cleanup: identify what's using disk, propose a safety-tiered plan, then execute with confirmation",
+  "author": {
+    "name": "Robin van Baalen"
+  }
+}
