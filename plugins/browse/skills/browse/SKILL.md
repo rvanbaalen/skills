@@ -379,6 +379,7 @@ $B prettyscreenshot --cleanup --scroll-to ".pricing" --width 1440 ~/Desktop/hero
 |---------|-------------|
 | `chain` (JSON via stdin) | Run a sequence of commands: pipe `[["goto","https://example.com"],["text"]]` to `$B chain`. Stops at first error |
 | `frame <sel\|@ref\|--name n\|--url pattern\|main>` | Switch to iframe context (or main to return) |
+| `inbox [--clear]` | List messages from sidebar scout inbox |
 | `skill list\|show\|run\|test\|rm <name?> [--arg k=v]...` | Run a browser-skill: deterministic Playwright script driving the daemon |
 | `watch [stop]` | Passive observation — periodic snapshots while user browses |
 
@@ -391,13 +392,11 @@ $B prettyscreenshot --cleanup --scroll-to ".pricing" --width 1440 ~/Desktop/hero
 ### Server
 | Command | Description |
 |---------|-------------|
+| `connect` | Launch headed Chromium with the bundled sidebar extension |
+| `disconnect` | Disconnect headed browser, return to headless mode |
+| `focus [@ref]` | Bring headed browser window to foreground (macOS) |
 | `handoff [message]` | Open visible Chrome at current page for user takeover |
 | `resume` | Re-snapshot after user takeover, return control to AI |
 | `state save\|load <name>` | Save/load browser state (cookies + URLs) |
 | `status` / `restart` / `stop` | Health check / restart / shutdown daemon |
 | `memory [--json]` | Heap + Chromium process tree snapshot |
-
-## Standalone limitations vs full gstack
-
-- `connect` (headed Chromium with the gstack sidebar extension) is not bundled here — use `handoff` for user takeover instead.
-- Telemetry and gstack config integration are inert: the code looks for gstack helper binaries, finds none, and skips silently.

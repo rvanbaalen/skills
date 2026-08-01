@@ -125,8 +125,8 @@
     {
       "name": "browse",
       "source": "./plugins/browse",
-      "description": "Fast persistent headless browser CLI for QA testing and site dogfooding — snapshots with @e refs, before/after diffs, annotated and responsive screenshots, form/dialog/upload testing, local HTML rasterization, and user handoff for CAPTCHAs. Standalone extraction of the browse skill from gstack by Garry Tan (MIT).",
-      "version": "1.0.0"
+      "description": "Fast persistent headless browser CLI for QA testing and site dogfooding — snapshots with @e refs, before/after diffs, annotated and responsive screenshots, form/dialog/upload testing, local HTML rasterization, headed mode with sidebar extension, and user handoff for CAPTCHAs. Standalone extraction of the browse skill from gstack by Garry Tan (MIT).",
+      "version": "1.1.0"
     },
     {
       "name": "disk-cleanup",

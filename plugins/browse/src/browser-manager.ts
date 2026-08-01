@@ -292,6 +292,8 @@ export class BrowserManager {
       process.env.BROWSE_EXTENSIONS_DIR || '',
       // Relative to this source file (dev mode: browse/src/ -> ../../extension)
       path.resolve(__dirname, '..', '..', 'extension'),
+      // Standalone plugin layout: src/ -> ../extension
+      path.resolve(__dirname, '..', 'extension'),
       // Global gstack install
       path.join(process.env.HOME || '', '.claude', 'skills', 'gstack', 'extension'),
       // Git repo root (detected via BROWSE_STATE_FILE location)
