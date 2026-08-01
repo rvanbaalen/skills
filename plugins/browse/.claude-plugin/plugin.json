@@ -1,0 +1,7 @@
+{
+  "name": "browse",
+  "description": "Fast persistent headless browser CLI for QA testing and site dogfooding. Standalone extraction of the browse skill from gstack by Garry Tan (MIT).",
+  "author": {
+    "name": "Robin van Baalen"
+  }
+}

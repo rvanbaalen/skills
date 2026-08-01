@@ -1,0 +1,23 @@
+{
+  "name": "browse-standalone",
+  "version": "1.60.1",
+  "description": "Standalone extraction of the browse skill from gstack by Garry Tan — fast persistent headless browser CLI for QA testing and dogfooding",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "browse": "./dist/browse"
+  },
+  "scripts": {
+    "build": "bun build --compile src/cli.ts --outfile dist/browse && bun build --compile src/find-browse.ts --outfile dist/find-browse",
+    "build:node-server": "bash scripts/build-node-server.sh"
+  },
+  "dependencies": {
+    "diff": "^7.0.0",
+    "playwright": "^1.58.2",
+    "socks": "^2.8.8"
+  },
+  "optionalDependencies": {
+    "@huggingface/transformers": "^4.1.0",
+    "@ngrok/ngrok": "^1.7.0"
+  }
+}

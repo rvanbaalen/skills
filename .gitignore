@@ -6,3 +6,4 @@ node_modules/
 
 # skill-creator eval workspaces — sibling to a plugin dir, not a plugin themselves
 plugins/*-workspace/
+.gstack/

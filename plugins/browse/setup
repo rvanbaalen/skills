@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# One-time build for the standalone browse plugin.
+# Requires bun (https://bun.sh). Installs deps, ensures Playwright Chromium,
+# and compiles the CLI to dist/browse.
+set -e
+cd "$(dirname "$0")"
+
+if ! command -v bun >/dev/null 2>&1; then
+  echo "browse setup failed: bun is required. Install it first:" >&2
+  echo "  curl -fsSL https://bun.sh/install | bash" >&2
+  exit 1
+fi
+
+bun install
+
+if ! bun --eval 'import { chromium } from "playwright"; const b = await chromium.launch(); await b.close();' >/dev/null 2>&1; then
+  echo "Installing Playwright Chromium..."
+  bunx playwright install chromium
+fi
+
+mkdir -p dist
+bun build --compile src/cli.ts --outfile dist/browse
+bun build --compile src/find-browse.ts --outfile dist/find-browse
+chmod +x dist/browse dist/find-browse
+
+echo "browse built: $(pwd)/dist/browse"
