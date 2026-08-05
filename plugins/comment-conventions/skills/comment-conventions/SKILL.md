@@ -187,15 +187,13 @@ Sentence breaks live wherever they fall — mid-line is fine, even encouraged. T
 
 A one-line or two-line docblock prose block is fine — descending length only matters when a line follows another.
 
-**Validation runs automatically after every Edit/Write.** This plugin ships a `PostToolUse` hook (`hooks/validate-after-edit.sh`) that runs the docblock validator against any file the Edit/Write/MultiEdit tools touch in a supported language. If the validator finds a Rule 4 violation, the hook returns the offending line numbers and character counts to Claude via stderr (exit code 2), and the edit is treated as not done until the docblock is rewritten and the validator returns clean.
-
-You can also run the validator manually at any time:
+**Verify with the validator, don't eyeball it.** After writing or editing a docblock, run the validator on the file — it reports the offending line numbers and character counts for any Rule 4 violation. Treat the edit as unfinished until it returns clean.
 
 ```bash
 node <this-skill-dir>/scripts/validate-docblocks.mjs <file>
 ```
 
-(`<this-skill-dir>` is the directory containing this `SKILL.md`.) The validator parses `/** ... */` blocks (JS, TS, PHP, Java, Kotlin, Swift, C#, C/C++, Rust block form). For files in languages it does not parse (e.g. Python triple-quote docstrings, Rustdoc `///`), the auto-hook skips them; verify Rule 4 manually for those.
+(`<this-skill-dir>` is the directory containing this `SKILL.md`.) The validator parses `/** ... */` blocks (JS, TS, PHP, Java, Kotlin, Swift, C#, C/C++, Rust block form). It skips languages it does not parse (e.g. Python triple-quote docstrings, Rustdoc `///`); verify Rule 4 manually for those.
 
 Do not rely on your own line-length judgment — models are bad at counting characters, and the difference between a passing and a violating docblock is often a few characters on a single line.
 
