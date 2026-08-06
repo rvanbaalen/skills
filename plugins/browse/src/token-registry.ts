@@ -244,8 +244,8 @@ export function createToken(opts: CreateTokenOptions): TokenInfo {
 }
 
 /**
- * Create a one-time setup key for the /pair-agent ceremony.
- * Setup keys expire in 5 minutes and can only be exchanged once.
+ * Create a one-time setup key for the /pair-agent ceremony. Setup keys expire in
+ * 5 minutes and can only be exchanged once.
  */
 export function createSetupKey(opts: Omit<CreateTokenOptions, 'clientId'> & { clientId?: string }): TokenInfo {
   const token = generateToken('gsk_setup_');
@@ -271,9 +271,9 @@ export function createSetupKey(opts: Omit<CreateTokenOptions, 'clientId'> & { cl
 }
 
 /**
- * Exchange a setup key for a session token.
- * Idempotent: if the same key is presented again and the prior session
- * has 0 commands, returns the same session token (handles tunnel drops).
+ * Exchange a setup key for a session token. Idempotent: if the same key is
+ * presented again and the prior session has 0 commands, returns the same
+ * session token (handles tunnel drops).
  */
 export function exchangeSetupKey(setupKey: string, sessionExpiresSeconds?: number | null): TokenInfo | null {
   const setup = tokens.get(setupKey);
@@ -317,9 +317,9 @@ export function exchangeSetupKey(setupKey: string, sessionExpiresSeconds?: numbe
 }
 
 /**
- * Validate a token and return its info if valid.
- * Returns null for expired, revoked, or unknown tokens.
- * Root token returns a special root info object.
+ * Validate a token and return its info if valid. Returns null for expired,
+ * revoked, or unknown tokens. Root token returns a special root info
+ * object.
  */
 export function validateToken(token: string): TokenInfo | null {
   if (isRootToken(token)) {
@@ -339,6 +339,14 @@ export function validateToken(token: string): TokenInfo | null {
   const info = tokens.get(token);
   if (!info) return null;
 
+  // Setup keys are single-use exchange material for POST /connect, not bearer
+  // credentials. They stay in the registry after exchange (see
+  // exchangeSetupKey's idempotent-retry path) with full default scopes, so
+  // without this check a leaked/observed setup key would authenticate API
+  // requests directly — before *and* after being "exchanged" — for its
+  // entire 5-minute TTL. Only exchangeSetupKey() may consume type 'setup'.
+  if (info.type !== 'session') return null;
+
   // Check expiry
   if (info.expiresAt && new Date(info.expiresAt) < new Date()) {
     tokens.delete(token);
@@ -349,9 +357,9 @@ export function validateToken(token: string): TokenInfo | null {
 }
 
 /**
- * Check if a command is allowed by the token's scopes.
- * The `chain` command is special: it's allowed if the token has meta scope,
- * but each subcommand within chain must be individually scope-checked.
+ * Check if a command is allowed by the token's scopes. The `chain` command is
+ * special: it's allowed if the token has meta scope, but each subcommand
+ * within chain must be individually scope-checked.
  */
 export function checkScope(info: TokenInfo, command: string): boolean {
   if (info.clientId === 'root') return true;
@@ -369,8 +377,8 @@ export function checkScope(info: TokenInfo, command: string): boolean {
 }
 
 /**
- * Check if a URL is allowed by the token's domain restrictions.
- * Returns true if no domain restrictions, or if the URL matches any glob.
+ * Check if a URL is allowed by the token's domain restrictions. Returns true if
+ * no domain restrictions, or if the URL matches any glob.
  */
 export function checkDomain(info: TokenInfo, url: string): boolean {
   if (info.clientId === 'root') return true;
