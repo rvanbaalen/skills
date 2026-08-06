@@ -27,14 +27,17 @@ Then install any plugin below with `/plugin install <name>@rvanbaalen`.
   - [time-registration](#time-registration)
   - [open-markdown](#open-markdown)
 - [Frontend &amp; UI](#frontend--ui)
+  - [design-principles](#design-principles)
   - [react-query](#react-query)
   - [driverjs-guide](#driverjs-guide)
   - [lottie-animator](#lottie-animator)
   - [svg-precision](#svg-precision)
 - [Specialized tools](#specialized-tools)
+  - [browse](#browse)
   - [ocr-document-processor](#ocr-document-processor)
   - [use-agentvision](#use-agentvision)
   - [cloudflare-deploy](#cloudflare-deploy)
+  - [disk-cleanup](#disk-cleanup)
 
 ---
 
@@ -183,6 +186,16 @@ Auto-triggers after writing plans/specs, or invoke with `/open-markdown:open-mar
 
 ## Frontend & UI
 
+### design-principles
+
+Apple's eight core principles of design — Purpose, Agency, Responsibility, Familiarity, Flexibility, Simplicity, Craft, Delight — as a working framework for reviewing, critiquing, and building interfaces. Surfaces the trade-off explicitly whenever honoring one principle costs another.
+
+```
+/plugin install design-principles@rvanbaalen
+```
+
+Auto-triggers when designing, reviewing, or critiquing a UI, screen, flow, or component.
+
 ### react-query
 
 TanStack Query v5 (React Query) reviewer and coach. Three modes: code review for existing query/mutation code, v4→v5 migration assistance, and coding guidance while writing new v5 code. Grounded in the official v5 docs.
@@ -227,6 +240,16 @@ Invoke with `/svg-precision:svg-precision`.
 
 ## Specialized tools
 
+### browse
+
+Fast persistent headless browser CLI for QA testing and site dogfooding: snapshots with `@e` refs, before/after diffs, annotated and responsive screenshots, form/dialog/upload testing, local HTML rasterization, headed mode with a bundled sidebar extension, and user handoff for CAPTCHAs. Standalone extraction of the `browse` skill from [gstack](https://github.com/garrytan/gstack) by Garry Tan (MIT).
+
+```
+/plugin install browse@rvanbaalen
+```
+
+Auto-triggers on phrases like "open in browser", "test the site", "take a screenshot", or "dogfood this".
+
 ### ocr-document-processor
 
 Extract text from images and scanned PDFs using OCR. Supports 100+ languages, table detection, structured output (markdown/JSON), and batch processing.
@@ -256,3 +279,13 @@ Deploy Astro sites to Cloudflare Workers with custom domains — initial setup, 
 ```
 
 Invoke with `/cloudflare-deploy:cloudflare-deploy`.
+
+### disk-cleanup
+
+Multi-step macOS disk-space cleanup that runs identify → propose → execute. Covers caches, dev tooling (Docker, Node/nvm, Xcode & iOS simulators, Android SDK, Gradle, package managers), VMs, Ollama models, orphaned app data, and full app uninstalls. Every candidate is categorized by safety tier, anything that isn't pure cache is confirmed first, and Time Machine local snapshots are thinned last so the freed space is actually realized.
+
+```
+/plugin install disk-cleanup@rvanbaalen
+```
+
+Invoke with `/disk-cleanup [scope]` (manual only). Pass `help` to list all scopes.
