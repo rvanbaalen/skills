@@ -34,7 +34,6 @@ Then install any plugin below with `/plugin install <name>@rvanbaalen`.
   - [svg-precision](#svg-precision)
 - [Specialized tools](#specialized-tools)
   - [browse](#browse)
-  - [ocr-document-processor](#ocr-document-processor)
   - [use-agentvision](#use-agentvision)
   - [cloudflare-deploy](#cloudflare-deploy)
   - [disk-cleanup](#disk-cleanup)
@@ -249,16 +248,6 @@ Fast persistent headless browser CLI for QA testing and site dogfooding: snapsho
 ```
 
 Auto-triggers on phrases like "open in browser", "test the site", "take a screenshot", or "dogfood this".
-
-### ocr-document-processor
-
-Extract text from images and scanned PDFs using OCR. Supports 100+ languages, table detection, structured output (markdown/JSON), and batch processing.
-
-```
-/plugin install ocr-document-processor@rvanbaalen
-```
-
-Invoke with `/ocr-document-processor:ocr-document-processor`.
 
 ### use-agentvision
 
