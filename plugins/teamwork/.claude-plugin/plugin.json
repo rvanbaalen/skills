@@ -1,0 +1,7 @@
+{
+  "name": "teamwork",
+  "description": "Run a task with a Claude Code agent team. Build mode pairs a Sonnet driver with an Opus navigator under a Fable lead, with an optional UX specialist and senior consultant, an early draft PR, and parallel pairs for independent tasks. Review mode fans out lens-based reviewers over a PR with cross-verification. Ships the xp-navigator, xp-driver, xp-ux, xp-senior and xp-reviewer agent definitions.",
+  "author": {
+    "name": "Robin van Baalen"
+  }
+}
