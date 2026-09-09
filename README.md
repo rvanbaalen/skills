@@ -22,6 +22,7 @@ Then install any plugin below with `/plugin install <name>@rvanbaalen`.
   - [pm](#pm)
   - [cofounder](#cofounder)
   - [drill-me](#drill-me)
+  - [teamwork](#teamwork)
   - [comment-conventions](#comment-conventions)
 - [Productivity](#productivity)
   - [time-registration](#time-registration)
@@ -146,6 +147,24 @@ Stress-test a plan before implementation. Walks the design tree one decision at 
 ```
 
 Invoke with `/drill-me:drill-me`, or trigger naturally with phrases like "drill me", "stress test this", "poke holes in this", or "what am I missing".
+
+### teamwork
+
+Run a task with a Claude Code agent team. You are the lead: you write the spec, spawn teammates from the shipped agent definitions, and orchestrate. Build mode is an XP pair with an early draft PR so progress shows in the diff, plus extra pairs for parallel-safe tasks. Review mode fans out one reviewer per lens over a PR and has them cross-verify each other's findings before anything is posted. Requires `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` and an interactive session.
+
+```
+/plugin install teamwork@rvanbaalen
+```
+
+Invoke with `/teamwork:teamwork [issue | PR | description]`. With no argument it asks whether the task is an issue, a PR to finish, a PR to review, or freeform work.
+
+| Agent | Model | Role |
+|-------|-------|------|
+| `xp-navigator` | Opus | Read-only pair partner: reviews, briefs the driver ahead, owns push, draft PR and PR body |
+| `xp-driver` | Sonnet | Sole editor and committer, runs targeted tests |
+| `xp-ux` | Opus | Copy, design and UX patterns; mockups as Artifacts; reviews rendered UI |
+| `xp-senior` | Opus | Idle consultant; adjudicates improvements beyond the task after independent analysis |
+| `xp-reviewer` | Opus | One review lens per instance in review mode, with cross-verification |
 
 ### comment-conventions
 
