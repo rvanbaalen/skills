@@ -33,6 +33,7 @@ Then install any plugin below with `/plugin install <name>@rvanbaalen`.
   - [driverjs-guide](#driverjs-guide)
   - [lottie-animator](#lottie-animator)
   - [svg-precision](#svg-precision)
+  - [beautiful-shadows](#beautiful-shadows)
 - [Specialized tools](#specialized-tools)
   - [browse](#browse)
   - [use-agentvision](#use-agentvision)
@@ -253,6 +254,16 @@ Deterministic SVG generation, validation, and rendering. Use for icons, diagrams
 ```
 
 Invoke with `/svg-precision:svg-precision`.
+
+### beautiful-shadows
+
+Three exact layered Tailwind arbitrary shadow utilities (`sm`, `md`, `lg`) for polished, neutral elevation on cards, controls, panels, popovers, hero media and modal-like containers. Copy-paste values, no default Tailwind shadow scales, no colored tinting. Vendored from [MengTo/Skills](https://github.com/MengTo/Skills) via [boraoztunc/skills](https://github.com/boraoztunc/skills) (MIT).
+
+```
+/plugin install beautiful-shadows@rvanbaalen
+```
+
+Auto-triggers when a surface needs refined elevation, or invoke with `/beautiful-shadows:beautiful-shadows`.
 
 ---
 

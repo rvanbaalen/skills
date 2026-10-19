@@ -1,0 +1,7 @@
+{
+  "name": "beautiful-shadows",
+  "description": "Three exact layered Tailwind arbitrary shadow utilities (sm, md, lg) for polished, neutral elevation on cards, controls, panels, popovers and hero media. Vendored from MengTo/Skills via boraoztunc/skills (MIT).",
+  "author": {
+    "name": "Robin van Baalen"
+  }
+}

@@ -133,6 +133,12 @@
       "source": "./plugins/teamwork",
       "description": "Run a task with a Claude Code agent team: XP build mode (Sonnet driver, Opus navigator, optional UX specialist and senior consultant, early draft PR, parallel pairs) and lens-based PR review mode with cross-verification. Requires CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1.",
       "version": "0.1.0"
+    },
+    {
+      "name": "beautiful-shadows",
+      "source": "./plugins/beautiful-shadows",
+      "description": "Three exact layered Tailwind arbitrary shadow utilities (sm, md, lg) for polished, neutral elevation on cards, controls, panels, popovers and hero media — no default shadow scales, no colored tinting. Vendored from MengTo/Skills via boraoztunc/skills (MIT).",
+      "version": "0.1.0"
     }
   ]
 }
