@@ -24,7 +24,7 @@ Run once per project, when Zoho is available and the project's entry in `project
 2. **Organization.** Call `List_all_Organizations`. With one organization, use it. With several, ask which, defaulting to the one with `is_default_org: true`.
 3. **User.** Call `Get_the_Current_User` and keep `user.user_id`. Don't ask.
 4. **Project.** Call `List_all_Projects` with `filter_by: Status.Active`. Score each Zoho project against the local project: its name, its repo folder names and its parent folder (e.g. local `celery` ↔ customer `Celery Payroll`). Match on `customer_name` as well as `project_name`. Among projects for the same customer, prefer `can_be_invoiced: true`, then the newest `created_time`: a client often has one current project per year or quarter, with older ones already invoiced. Offer the best match first, marked "(Recommended)", with up to three runners-up, as `<project_name> — <customer_name>`.
-5. **Task.** Call `List_all_Tasks_of_a_Project` for the chosen project and ask which task to log under by default. Recommend the active task with the most logged hours (`log_time`).
+5. **Task.** Call `List_all_Tasks_of_a_Project` for the chosen project and ask which task to log under by default. Recommend the active task with the most logged hours (`log_time`). Save the project's other active tasks too, as `tasks` (name → `task_id`), so a day can be split over them (see "Writing entries").
 6. **Tool approval.** See below. Only asked when the MCP's tool prefix isn't the one the skill pre-approves.
 
 Save the answers on the project's entry in `projects.json` and confirm in one line (`Zoho: Freelance werk 2026 — Celery Payroll, task Development`):
@@ -43,6 +43,11 @@ Save the answers on the project's entry in `projects.json` and confirm in one li
         "customer_name": "Acme",
         "task_id": "4405026000000477027",
         "task_name": "Development",
+        "tasks": {
+          "Development": "4405026000000477027",
+          "Research": "4405026000000477025",
+          "Meetings": "4405026000000477029"
+        },
         "tool_prefix": "mcp__claude_ai_ZohoMCP__"
       }
     }
@@ -70,7 +75,9 @@ When the user later asks to change the Zoho project or task, or to stop or start
 
 ## Writing entries
 
-Zoho gets one time entry per day with work. For a multi-day period, summarize each day separately (`SKILL.md` steps 8–9, per day) and log each day as its own entry. Days with no work get no entry.
+Zoho gets one time entry per day with work, under the project's default task. For a multi-day period, summarize each day separately (`SKILL.md` steps 8–9, per day) and log each day as its own entry. Days with no work get no entry.
+
+When the project has several `tasks`, split a day over them the way the user's own entries do (the project's `style` says how): a meeting goes under the meetings task and an investigation without a result yet under the research task, each as its own entry with its own short note and hours, and the rest under the default task. Don't split what is one piece of work. Steps 1 and 2 below then run per entry instead of per day. A project whose `tasks` are missing gets them from `List_all_Tasks_of_a_Project` on the next run, without asking.
 
 ### 1. Check for existing entries
 
@@ -84,7 +91,7 @@ Show a preview per day, then ask with `AskUserQuestion`:
 
 ```
 2026-09-28 · Development · Freelance werk 2026
-Addressed review feedback on OAuth login, implemented CSV export for reports
+Improved the OAuth login after review, built CSV export for reports
 ```
 
 - Question: `Hours for 2026-09-28?`
@@ -96,10 +103,10 @@ With several days, ask about up to four days in one `AskUserQuestion` call.
 
 Call `Log_a_Time_Entry` (or `Update_a_Time_Entry` with the existing `time_entry_id` when the user chose to update):
 
-- `project_id`, `task_id`, `user_id` from the saved config
+- `project_id` and `user_id` from the saved config, and the `task_id` of the task this entry belongs to (the default `task_id`, or one from `tasks`)
 - `log_date` as `YYYY-MM-DD`. The tool's description says `yyyy-dd-mm`; that's wrong, and existing entries use `YYYY-MM-DD`.
 - `log_time` as `HH:mm` (`6:30` → `06:30`)
-- `notes`: that day's summary line, at most 500 characters. Shorten by merging items rather than cutting mid-sentence.
+- `notes`: that entry's summary line, written to the rules in `SKILL.md` step 9 and the project's `style`. Zoho allows 500 characters, but a note that needs them is too long: merge items rather than cutting mid-sentence.
 - `is_billable`: leave it out, so the project's default applies
 
 Don't retry a refused write with different arguments; report the error.
