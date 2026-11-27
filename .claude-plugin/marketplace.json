@@ -42,7 +42,7 @@
       "name": "time-registration",
       "source": "./plugins/time-registration",
       "description": "Git-based time registration summaries",
-      "version": "1.4.0"
+      "version": "1.5.0"
     },
     {
       "name": "lottie-animator",

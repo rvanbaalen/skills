@@ -7,7 +7,7 @@ allowed-tools: Bash(git log:*), Bash(git reflog:*), Bash(git worktree list:*), B
 
 # Time Registration
 
-Summarize recent git activity into a short, comma-separated one-liner suitable for time registration or standup notes. Covers every repo that belongs to the project, every worktree of those repos, remote-tracking branches (work pushed from other machines), and the user's PRs — not just the current working tree. Distinguishes new work from iteration on existing PRs, so a day of review fixes doesn't read as a day of building. A thin git log is never taken as an empty day without checking the reflog, reviews and session logs. The result is copied to the clipboard or, once set up per project, logged to Zoho Invoice.
+Summarize recent git activity into a short, comma-separated one-liner suitable for time registration or standup notes, written for the client or employer who reads it and in the user's own style. Covers every repo that belongs to the project, every worktree of those repos, remote-tracking branches (work pushed from other machines), and the user's PRs — not just the current working tree. Distinguishes new work from iteration on existing PRs, so a day of review fixes doesn't read as a day of building. A thin git log is never taken as an empty day without checking the reflog, reviews and session logs. The result is copied to the clipboard or, once set up per project, logged to Zoho Invoice.
 
 ## Arguments
 
@@ -191,21 +191,39 @@ Leave out trivial GitHub events. They move a PR's `updatedAt` into the window bu
 
 ### 9. Summarize
 
-Distill the classified work from all of the project's repos into a single comma-separated summary line. When logging to Zoho over a multi-day period, write one line per day instead: Zoho gets one entry per day. The summary should:
+The note is read by whoever pays for the hours: a client or an employer who knows the product, not the code. Distill the classified work from all of the project's repos into one short line they understand at a glance. When logging to Zoho over a multi-day period, write the notes per day instead (see [zoho.md](zoho.md)).
 
-- Use plain, human-readable language (not commit message format)
-- Group related commits into one item within a kind (e.g., 3 commits + 1 merged PR about auth → "implemented OAuth login"), also when the work spans repos (a design-system change and the app change that uses it)
-- Count each piece of work once — a PR's commits and the PR itself are the same work
-- Prefer PR titles over individual commit messages when a PR is the better summary unit
-- Use the verb that matches the item's kind from step 8
-- Keep it short — aim for one line that fits in a timesheet entry
-- Mention package/dependency upgrades with version numbers if available
+Follow the project's saved `style` first (see "Match the user's own notes" below). Where it is silent:
+
+- **Name the result in the reader's words.** The feature, screen or integration and what changed for it: "added a filter builder to the employee list", not the classes, components, hooks or files that were touched.
+- **Leave out the plumbing.** No PR or issue numbers, branch names, commit counts or internal version numbers, and no process steps such as rebasing, pushing, review rounds, re-running CI or filing follow-up issues. They are how the work was done, not what was done.
+- **Stay to the point.** One line of one to four items, at most about 200 characters. When a day holds more than that, merge the small items into the larger piece of work they belong to instead of listing them.
+- **Say what this day added.** Work on one feature often spans days; name the part that was done on this day ("employee list: saved filters" one day, "employee list: column picker" the next). Never repeat a catch-all such as "worked on the employee list" or "review feedback" day after day. Look at the notes already logged for the days before, and don't reuse their wording.
+- **Meetings name who and what:** "meeting with Sam and Alex about the import flow".
+- Group related commits into one item within a kind (3 commits + 1 merged PR about auth → "implemented OAuth login"), also when the work spans repos (a design-system change and the app change that uses it).
+- Count each piece of work once: a PR's commits and the PR itself are the same work.
+- Use the verb that matches the item's kind from step 8, in plain words ("improved the login form after review", not "addressed review feedback on PR 812").
+- Mention a package or dependency upgrade with its version number only when the upgrade is the item itself.
 
 **Example output:**
 
 ```
-Addressed review feedback on OAuth login, implemented CSV export for reports, fixed pagination bug on dashboard, reviewed billing webhook PR
+Improved the OAuth login after review, built CSV export for reports, fixed the pagination on the dashboard
 ```
+
+#### Match the user's own notes
+
+Notes should read as if the user wrote them. The project's `style` field in `projects.json` holds how they write: language, length, wording habits, and a few of their own notes as examples.
+
+```json
+"style": {
+  "language": "nl",
+  "rules": ["One short sentence per entry", "Name the integration or feature, never the PR"],
+  "examples": ["Entity mapping documentatie uitgewerkt, besproken met het team en geupdate."]
+}
+```
+
+When `style` is missing and earlier notes can be read (Zoho's `List_all_Time_Entries`), learn it once: read the oldest entries of the project, or the period the user names as their own writing, since later entries may have been written by this skill. Take from them the language, the typical length, how items are joined, which details they do and don't mention, and how the work is split over tasks. Save that as `style`, with three to five verbatim notes as `examples`, and tell the user in one line what was learned. When the user corrects the wording of a note, update `style` so the correction holds for later runs.
 
 ### 10. Deliver
 
